@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/login.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/header_sul.css" rel="stylesheet" type="text/css" />
+    <title>ログイン</title>
+  </head>
+  <body>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">DT-Health</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto my-2 my-lg-2 d-flex align-items-center">
+          {# ms-auto(margin-left: auto;) 要素は親コンテナ内で右寄せ #}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">新規会員登録</a>
+            </li>
+            /
+            <li class="nav-item">
+              <a class="nav-link" href="#">ログイン</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="login_inner">
+      <form action="" method="post">
+        <div class="login"> 
+          <h1>ログイン</h1>
+        </div>
+        
+        <div class="email">
+          <label for="email">メールアドレス</label>
+          <input type="email" name="email" value="{{ dataArr.email }}" id="email">
+          {% if errArr.email %}
+            <p style="color: #f00;">{{ errArr.email }}</p>
+          {% endif %}
+          {% if delete and not errArr.email %}
+           
+            <p style="color: #f00; font-weight: 600;">{{ errArr.email }}</p>
+          {% endif %}
+        </div>  
+        <div class="password">
+          <label for="password">パスワード</label>
+          <input type="password" name="password" 
+          value="{{ password }}" id="password">
+          {% if errArr.password %}
+          <p style="color: #f00; font-size: 18px;">{{errArr.password}}
+          </p>
+          {% endif %}
+          {% if errArr.login %}
+            <p style="color: #f00; font-weight: bold;">{{ errArr.login }}</p>
+          {% endif %}
+        </div>
+        <button type="submit" name="login" value="ログイン" class="login_btn">ログイン</button>  
+      </form>
+      
+      <div class="pass_forget">  
+        <p><a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}request_form.php">パスワードを忘れた方はこちら</a></p>
+      </div>
+      <div class="log_forget">
+        <p><a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}regist.php">新規会員登録</a></p>
+      </div>
+    </div>
+    {# contact_inner #}
+  </div> 
+  {# conteiner #}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ 
+  </body>
+</html>
+

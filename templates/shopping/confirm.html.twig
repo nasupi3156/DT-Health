@@ -1,0 +1,116 @@
+<!DOCTYPE html >
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>会員登録確認</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/confirm.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/header_sul.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}login.php">DT-Health</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto my-2 my-lg-2 d-flex align-items-center">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}regist.php">新規会員登録</a>
+              </li>
+              /
+              <li class="nav-item">
+                <a class="nav-link" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}login.php">ログイン</a>
+              </li>
+            </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+    <div class="container">
+    <form class="confirm_form" method="post" action="confirm.php">
+      <h1>会員登録</h1>
+      <table class="confirm_table">
+        <tr>
+          <th class="confirm_name">お名前(氏名)</th>
+          <td class="confirm_data">{{formData.family_name}} {{formData.first_name}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">お名前(カナ)</th>
+          <td class="confirm_data">{{formData.family_name_kana}}{{formData.first_name_kana}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">性別</th>
+          <td class="confirm_data">{% if formData.sex == '男性' %}男性{% elseif formData.sex == '女性' %}女性{% elseif formData.sex == 'その他' %}その他{% endif %}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">生年月日</th>
+          <td class="confirm_data">{{formData.year}}年 {{formData.month}}月 {{formData.day}}日</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">郵便番号</th>
+          <td class="confirm_data">{{formData.zip1}} - {{formData.zip2}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">住所</th>
+          <td class="confirm_data">{{formData.address}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">メールアドレス</th>
+          <td class="confirm_data">{{formData.email}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">電話番号</th>
+          <td class="confirm_data">{{formData.tel1}} - {{formData.tel2}} - {{formData.tel3}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">パスワード</th>
+          <td class="confirm_data">{{formData.password}}</td>
+        </tr>
+
+        {# <tr>
+          <th>パスワード確認</th>
+          <td>{{dataArr.password_confirm}}</td>      
+        </tr> #}
+        
+        {# <tr>
+          <th class="confirm_name">お好みの食品</th>
+          <td class="confirm_data">{% for index in dataArr.traffic %}{{trafficArr[index]}}<br>{% endfor %}</td>
+        </tr> 
+        <tr> #}
+
+      </table>
+
+        <div class="complete_form">
+          <input type="submit" name="back" value="修正する" onclick="history.back(); return false;" class="back_button">
+          {# history.back() : 一つ前に戻る #}
+          <input type="submit" name="complete" value="登録する" class="regist_button">
+          
+          {# confirm.phpの値はinputじゃないが、それをどうやってとってきてるのかというのが下記のfor文などから #}
+          {# {% for key, value in formData %} #}
+          <!-- ↓下記メソッドで配列か否かをチェックしている iterable --> 
+          {# {% if value is iterable %} #}
+          {# 配列に関しての処理(この場合はtraffic) #}
+          {# {% for v in value %}
+        <input type="hidden" name="{{key}}[]" value="{{v}}">
+      {% endfor %}
+    {% else %}
+        <input type="hidden" name="{{key}}" value="{{value}}"> #}
+        {# input type="hidden" ブラウザーに表示されない処理 #}
+        {# 画面表示させないけどkeyとvalueのデータを作っている #}
+      {# {% endif %}
+    {% endfor %} #}
+        </div>
+        {# complete_form #}
+      </form> 
+    </div>
+    {# container #}
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+</html>

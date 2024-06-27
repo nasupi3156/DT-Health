@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/header.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/sidebar.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/contact.css" rel="stylesheet" type="text/css" />
+
+    <script src="{{constant('shopping\\Bootstrap::APP_URL')}}js/logout.js"></script>
+    <title>profile</title>
+   
+  </head>
+  <body>
+    <header> 
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php">DT-Health </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+          <ul class="navbar-nav ms-auto my-2 my-lg-2 d-flex align-items-center">
+            <form class="d-flex search-form" role="search">
+            <input class="form-control me-2" type="search" placeholder="キーワード検索" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">search</button>
+            </form>
+
+            <li class="nav-item">
+              <a class="nav-link greeting" href="#">こんにちは <span style="font-weight: 500;">{{family_name}}</span> さん！</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle my-dropdown-toggle account" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                マイアカウント
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}profile.php">お客様情報</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order.php">注文履歴</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order.php">注文履歴詳細</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}contact.php">お問い合わせ</a></li>
+              </ul>
+     
+              <li class="nav-item">
+                <a class="nav-link cart" href="cart.php">
+                  <i class="bi bi-cart position-relative" style="font-size: 26px;">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger" style=" width: 24px; height: 24px; padding: 0; font-size: 13px; line-height: 24px;">
+                      {{sumNum == 0 ? '0' : sumNum}} 
+                      <!-- ここにカート内のアイテム数を動的に表示 -->
+                    </span>
+                  </i> 
+                </a>
+              </li>
+            <li class="nav-item login-out">
+              {% if isUserLogin %}
+                <a id="logoutButton" class="nav-link click" href="./login.php?logout=1" onclick="return logoutConfirm();">ログアウト</a>
+              {% else %}
+                <a class="nav-link click" href="./login.php">ログイン</a>
+              {% endif %}
+            </li>            
+          </ul> 
+        </div>
+      </div>
+    </nav> 
+  </header>   
+  <section class="my-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-3">
+          <div class="list-group">
+            <p class="list-ctg"><span class="underline-text">カテゴリー</span></p>
+      
+            <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}profile.php" class="list-info">お客様情報</a>
+      
+            <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order.php" class="list-info">注文履歴</a>
+  
+            <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order_detail.php" class="list-info">注文履歴詳細</a>
+          
+            <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}contact.php" class="list-info">お問い合わせ</a>
+          </div>
+        </div>
+        
+        <div class="col-7 Entire">
+          <div class="border p-4">
+            <div class="text-center contact mb-4">
+              <h3>お問い合わせ</h3>
+            </div>
+              <form action="contact.php" method="post">
+                <div class="form-group mb-3">
+                  <label for="username" class="mb-2">お名前 <span style="color:red;">*</span></label>
+                  <input type="text" class="form-control mb-2" id="username" name="username" value={{ dataArr.username }}>
+                    {% if errArr.username | length > 0 %}
+                      <p class="color">{{ errArr.username }}</p>
+                    {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                  <label for="email" class="mb-2">メールアドレス <span style="color:red;">*</span></label>
+                  <input type="email" class="form-control mb-2" id="email" name="email"  value={{ dataArr.email }}>
+                    {% if errArr.email | length > 0 %}
+                      <p class="color">{{ errArr.email }}</p>
+                    {% endif %}
+                    {% if duplicateEmail %}
+                      <p class="color">こちらのメールアドレスは既に使用されています。</p>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                  <label for="contents" class="mb-2">お問い合わせ内容 <span style="color:red;">*</span></label>
+                  <textarea class="form-control mb-2" id="contents" name="contents" rows="5">{{ dataArr.contents }}</textarea>
+
+                    {% if errArr.contents | length > 0 %}
+                      <p class="color">{{ errArr.contents }}</p>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-center click">
+                <button type="submit" name="send" class="btn btn-outline-success btn-custom mb-3">送信</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {# row #}
+    </div>
+    {# container #}
+  </section> 
+  <footer>
+    <p>DT-Health</p>
+  </footer>
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
