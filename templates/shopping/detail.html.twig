@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    {# bootstrap icons #}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/detail.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/header.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/footer.css" rel="stylesheet" type="text/css" />
+    
+    <script language="JavaScript" type="text/javascript" src="{{constant('shopping\\Bootstrap::APP_URL')}}js/shopping.js"></script>
+  
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+     <title>注文詳細</title>
+  </head>
+  <body>
+    <header> 
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php">DT-Health </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+          <ul class="navbar-nav ms-auto my-2 my-lg-2 d-flex align-items-center">
+            <form class="d-flex search-form" role="search">
+            <input class="form-control me-2" type="search" placeholder="キーワード検索" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">search</button>
+            </form>
+
+            <li class="nav-item">
+              <a class="nav-link greeting" href="#">こんにちは <span style="font-weight: 500;">{{family_name}}</span> さん！</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle my-dropdown-toggle account" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                マイアカウント
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}profile.php">お客様情報</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order.php">注文履歴</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order_detail.php">注文履歴詳細</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}contact.php">お問い合わせ</a></li>
+              </ul>
+     
+              <li class="nav-item">
+                <a class="nav-link cart" href="cart.php">
+                  <i class="bi bi-cart position-relative" style="font-size: 26px;">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger" style=" width: 24px; height: 24px; padding: 0; font-size: 13px; line-height: 24px;">
+                      {{sumNum == 0 ? '0' : sumNum}} 
+                      <!-- ここにカート内のアイテム数を動的に表示 -->
+                    </span>
+                  </i> 
+                </a>
+              </li>
+
+            <li class="nav-item login-out">
+              {% if isUserLogin %}
+                <a id="logoutButton" class="nav-link click" href="./login.php?logout=1" onclick="return logoutConfirm();">ログアウト</a>
+              {% else %}
+                <a class="nav-link click" href="./login.php">ログイン</a>
+              {% endif %}
+            </li>
+          </ul> 
+        </div>
+      </div>
+    </nav> 
+  </header> 
+
+  <input type="hidden" name="entry_url" value="{{constant('shopping\\Bootstrap::ENTRY_URL')}}" id="entry_url" >
+     
+   <div class="container-fluid">
+     <div class="row">
+      <div class="col-4">
+        <div class="item_image">
+          <img src="{{constant('shopping\\Bootstrap::ENTRY_URL')}}images/{{itemData.image}}" alt="{{itemData.item_name}}" />
+        </div>
+      </div>
+      {# col-3 #}
+      <div class="col-7 detail_">
+        <div class="detail_list">
+          <dl>
+            <div class="item_name">
+              <dt>商品名 : </dt>
+              <dd> {{itemData.item_name}} </dd>
+            </div>
+            <div class="item_detail">
+              <dt>{{itemData.detail}}</dt>
+            </div>
+            <div class="item_price">
+              <dd>
+                <span class="money">&yen;{{itemData.price|number_format(0, '.', ',')}}</span>
+                <span class="tax">(税込)</span>
+              </dd>
+            </div>
+          </dl>
+        </div>     
+        <input type="hidden" name="item_id" id="item_id" value="{{itemData.item_id}}">
+        {# jQueryのitem_idがこちらのitemDataのitem_id(商品情報1,2)などと結びついいて、type="hidden"で見えないようにしている #}
+        {# valueのitemData.item_idは、detail.phpの商品情報をとってきた、そのid数が入ってます#}
+        {# なのでpost通信ではなくてget通信 #}
+        
+
+        {# 戻る先がない時(新しいウィンドウで開く等)での意図しない挙動を防ぐ #}
+        {# return false; はphpのexitと同じ #}
+        <input type="button" name="back" value="一覧へ戻る" onclick="history.back(); return false;" / class="detail_back">
+        {# onclick属性 : history.back(); return false　一つ前のメージへ戻る #}
+        <input type="button" name="cart_in" value="ショッピングカートへ入れる" id="cart_in" / class="detail_cart">
+        {# formの中に囲まれてないでbuttonなどが行われたのは jQueryを使っているから。上記でjQueryのファイルを読み込む  id="cart_in" #}
+        {# idがクリックjsでイベント確認 #}
+        
+        </div>
+        {# col-7 #}
+      </div>
+      {# row #}
+   </div> 
+    {# container #}
+   <footer>
+    <p>DT-Health</p>
+   </footer>
+  </body>
+</html>

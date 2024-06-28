@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/header.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/footer.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/purchase.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <header> 
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php">DT-Health </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+          <ul class="navbar-nav ms-auto my-2 my-lg-2 d-flex align-items-center">
+            <form class="d-flex search-form" role="search">
+            <input class="form-control me-2" type="search" placeholder="キーワード検索" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">search</button>
+            </form>
+
+            <li class="nav-item">
+              <a class="nav-link greeting" href="#">こんにちは <span style="font-weight: 500;">{{family_name}}</span> さん！</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle my-dropdown-toggle account" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                マイアカウント
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}profile.php">お客様情報</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order.php">注文履歴</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order_detail.php">注文履歴詳細</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}contact.php">お問い合わせ</a></li>
+              </ul>
+     
+              <li class="nav-item">
+                <a class="nav-link cart" href="cart.php">
+                  <i class="bi bi-cart position-relative" style="font-size: 26px;">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger" style=" width: 24px; height: 24px; padding: 0; font-size: 13px; line-height: 24px;">
+                     {# rounded-pillからrounded-circle #}
+                      {{sumNum == 0 ? '0' : sumNum}} 
+                      <!-- ここにカート内のアイテム数を動的に表示 -->
+                    </span>
+                  </i> 
+                </a>
+              </li>
+
+            <li class="nav-item login-out">
+              {% if isUserLogin %}
+                <a id="logoutButton" class="nav-link click" href="./login.php?logout=1" onclick="return logoutConfirm();">ログアウト</a>
+              {% else %}
+                <a class="nav-link click" href="./login.php">ログイン</a>
+              {% endif %}
+            </li>
+          </ul> 
+        </div>
+      </div>
+    </nav> 
+  </header> 
+  
+  <div class="item_confirm">
+    <p>注文内容を確認する</p>
+  </div>
+  
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-6">
+        
+          <table class="table table-hover item_data" >
+            <thead>
+              <tr>
+                <th>商品名</th>
+                <th>画像</th>
+                <th>商品数</th>
+                <th>価格</th>
+              </tr>
+            </thead>
+            <tbody>
+              {# <h5>商品リスト</h5> #}
+              {% for value in dataArr %}
+                <tr>
+                  <td class="name">{{value.item_name}}</td>
+                  <td class="image">   
+                    <img src="{{constant('shopping\\Bootstrap::ENTRY_URL')}}images/{{value.image}}" alt="{{value.item_name}}" />
+                  </td>
+                  <td>{{ value.quantity }}</td>
+                  <td>&yen;{{(value.price * value.quantity)|number_format(0, '.', ',')}}</td>
+                </tr>     
+              {% endfor %}
+            </tbody>
+          </table>
+          {% if dataArr | length == 0 %}
+          <p class="no-item">カートに商品は入っていません</p>
+          {# dataArrが何も入ってなければ #}
+          {% endif %}
+        </div>
+
+        <div class="col-6 cart_confirm">
+        <!-- お客様情報 -->
+          <h5>お届け先 <span class="edit"> <button class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editProfileModal">編集</button></span></h5>
+            <table class="cart_information">
+              <tr>
+                <th>お名前 :</th>
+                <td>{{ profile.family_name }} {{ profile.first_name }}</td>
+              </tr>
+              <tr>
+              <th>郵便番号 :</th>
+                <td>{{ profile.zip1 }} - {{ profile.zip2 }}</td>
+                </tr>
+              <tr>
+              <th>住所 :</th>
+                <td>{{profile.address}}</td>
+              </tr>
+              <tr>
+              <th>電話番号 :</th>
+                <td>{{ profile.tel1 }} - {{ profile.tel2 }} - {{ profile.tel3 }}</td>
+              </tr>
+            </table>
+            
+            <h5>注文内容</h5>
+            <table class="order_detail">
+              <tr>
+              <th>商品数 :</th>
+                <td>{{ sumNum == 0 ? 0 : sumNum }}</td>
+              </tr>
+              <tr>
+              <th>商品の小計 : </th>
+                <td>&yen;{{ sumPrice|number_format(0, '.', ',') }}</td>
+              </tr>
+              <tr>
+              <th>送料 :</th>
+                <td>&yen;{{ shipping_fee }}</td>
+              </tr>
+            </table>
+            
+            <p class="pay">お支払い</p>
+              <label class="cash_label">
+                <input type="radio" name="cash" class="cash" checked>代金引換
+              </label>
+            <div class="price">
+              <table>
+                <tr>
+                  <th>ご請求額 :</th>
+                  <td> &yen;{{ sumPrice + shipping_fee }}</td>  
+                </tr>
+              </table>
+            </div>
+        
+            <form action="purchase.php" method="post">
+              {# 商品データ #}
+            {% for value in dataArr %}
+            <input type="hidden" name="item_id[]" value="{{ value.item_id }}">
+            <input type="hidden" name="item_image[]" value="{{ value.image }}">
+            <input type="hidden" name="item_name[]" value="{{ value.item_name }}">
+            <input type="hidden" name="quantity[]" value="{{ value.quantity }}">
+            {# item_id[]などで単一のフォーム送信で複数のアイテムのデータを一括で送信できる(例えば2,4),また配列で処理ができるようになる #}
+            <input type="hidden" name="price[]" value="{{ value.price }}">
+            {% endfor %}
+            {# 顧客データ #}
+            <input type="hidden" name="family_name" value="{{ profile.family_name }}">
+            <input type="hidden" name="first_name" value="{{ profile.first_name }}">
+            <input type="hidden" name="zip1" value="{{ profile.zip1 }}">
+            <input type="hidden" name="zip2" value="{{ profile.zip2 }}">
+            <input type="hidden" name="address" value="{{ profile.address }}">
+            <input type="hidden" name="tel1" value="{{ profile.tel1 }}"> 
+            <input type="hidden" name="tel2" value="{{ profile.tel2 }}"> 
+            <input type="hidden" name="tel3" value="{{ profile.tel3 }}">
+            {# 全体の数量や価格の値 #}
+            <input type="hidden" name="sumNum" value="{{ sumNum }}">
+            {# 全商品の総数量 #}
+            <input type="hidden" name="sumPrice" value="{{ sumPrice }}">
+            {# 全商品の総価格 #}
+            <button type="submit" name="submit" class="custom-submit">注文確定する</button>
+          </form>
+
+          <p class="list_back">
+            <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php">商品一覧へ戻る</a>
+          </p> 
+        </div>
+        {# col-md- #}
+      </div>
+      {# row #}
+    </div>
+    {# container #}
+  </section>
+
+  <section>
+    <div class="container mt-4">
+  <!-- Modal -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          {# <h5 class="modal-title" id="editProfileModalLabel">お客様情報の編集</h5> #}
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="purchase.php" method="POST" id="updateForm">
+          <div id="message"></div>
+          <div class="mb-3">
+            <label for="modalFamilyName" class="form-label">名前(氏)</label>
+            <input type="text" class="form-control" id="modalFamilyName" name="family_name" value="{{user.family_name}}">
+          </div>
+          <div class="mb-3">
+            <label for="modalFirstName" class="form-label">名前(名)</label>
+            <input type="text" class="form-control" id="modalFirstName" name="first_name" value="{{user.first_name}}">
+          </div>
+          <div class="mb-3">
+            <label for="modalZipcode" class="form-label">郵便番号</label>
+            <div class="zip-number">
+              <input type="text" class="form-control zip-input" id="modalZipcode" name="zip1" value="{{user.zip1}}" maxlength="3"> 
+                {# <label for="modalZipcode" class="form-label">郵便番号</label> #}
+              <input type="text" class="form-control zip-input" id="modalZipcode" name="zip2" value="{{user.zip2}}" maxlength="4">
+            </div>
+          </div>                                   
+           <div class="mb-3">
+            <label for="modalAddress" class="form-label">住所</label>
+            <input type="text" class="form-control" id="modalAddress" name="address" value="{{user.address}}">
+            </div>
+            <div class="mb-3">
+              <label for="modalPhone" class="form-label">電話番号</label>
+              <div class="phone-number">
+                <input type="text" class="form-control phone-input"  name="tel1" value="{{user.tel1}}">
+                <input type="text" class="form-control phone-input" name="tel2" value="{{user.tel2}}">
+                <input type="text" class="form-control phone-input" name="tel3" value="{{user.tel3}}">
+              </div>
+            </div>
+            <div class="modal-footer button-modal">
+              <button type="submit" class="btn btn-secondary btn-left" data-bs-dismiss="modal">閉じる</button>
+              
+              <button type="submit" name="btn-modal" class="btn btn-primary btn-right">保存</button>
+              {# javascriptを使わない場合は、保存のonclick="submitProfileForm()要らない #}
+              
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<section>
+<footer>
+  <p>DT-Health</p>
+</footer>
+ 
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{constant('shopping\\Bootstrap::APP_URL')}}js/logout.js"></script>
+  
+</body>
+</html>

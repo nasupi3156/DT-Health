@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{constant('shopping\\Bootstrap::APP_URL')}}js/common.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/regist.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/header_sul.css" rel="stylesheet" type="text/css" />
+    <title>会員登録</title>
+  </head>
+  <body>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}login.php">DT-Health</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto my-2 my-lg-2 d-flex align-items-center">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">新規会員登録</a>
+              </li>
+                /
+              <li class="nav-item">
+                <a class="nav-link" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}login.php">ログイン</a>
+              </li>
+            </ul>
+          </div>
+      </div>
+    </nav>
+  </header>
+  <section class="form_section">
+    <h1>新規会員登録</h1>
+      {% if error_message %}
+          <div class="alert alert-danger">{{ error_message }}</div>
+      {% endif %}
+
+    <input type="hidden" name="entry_url" id="entry_url" value="{{constant('shopping\\Bootstrap::ENTRY_URL')}}">
+    <form class="regist_form" method="post" action="regist.php">
+      <table class="regist_table">
+        <tr class="regist_row">
+          <th class="regist_name">お名前(氏名)<span class="red">*</span></th>
+          <td class="regist_data">
+            <input type="text" name="family_name" value="{{ formData.family_name | default('')}}" class="{{ errArr.family_name | length > 0 ? "input_error" : '' }}">
+            <input type="text" name="first_name" value="{{ formData.first_name | default('')}}" class="{{ errArr.first_name | length > 0 ? "input_error" : '' }}">
+            {% if errArr.family_name | length > 0 %}<br><span class="red">{{ errArr.family_name }}</span>{% endif %}
+            {% if errArr.first_name | length > 0 %}<br><span class="red">{{ errArr.first_name }}</span>{% endif %}
+          </td>
+        </tr>
+
+        <tr class="regist_row">
+          <th class="regist_name">お名前(カナ)<span class="red">*</span></th>
+          <td class="regist_data">
+            <input type="text" name="family_name_kana" value="{{formData.family_name_kana | default('') }}" class="{{ errArr.family_name_kana | length > 0 ? "input_error" : '' }}">
+            <input type="text" name="first_name_kana" value="{{ formData.first_name_kana | default('') }}" class="{{ errArr.first_name_kana ? "input_error" : '' }}">
+            {% if errArr.family_name_kana | length > 0 %}<br><span class="red">{{ errArr.family_name_kana }}</span>{% endif %}
+            {% if errArr.first_name_kana | length > 0 %}<br><span class="red">{{ errArr.first_name_kana }}</span>{% endif %}
+          </td>
+        </tr>
+
+        <tr class="regist_row">
+          <th class="regist_name">性別<span class="red">*</span></th>
+          <td class="regist_data">
+            {% for index, label in sexArr %}
+              <input type="radio" name="sex" value="{{index}}" id="sex_{{index}}" class="sex-radio" {% if formData.sex == index %} checked="checked" {% endif %}>
+              <label for="sex_{{index}}">{{label}}</label>
+              {# 最初のループindex男性,次のループlebel女性, #}
+            {% endfor %}
+            {% if errArr.sex | length> 0 %}<br><span class="red">{{errArr.sex}}</span>{% endif %}
+          </td>
+        </tr>
+
+        <tr class="regist_row">
+          <th class="regist_name">生年月日<span class="red">*</span></th>
+          <td class="regist_data">
+            <select name="year">
+              {% for index, label in yearArr %}
+              <option value="{{index}}" {% if formData.year == index %} selected{% endif %}>{{ label }} </option>
+              {% endfor %}
+            </select>
+
+            <select name='month'>
+              {% for index, label in monthArr %}
+              <option value="{{index}}" {% if formData.month == index %} selected{% endif %}>{{ label }} </option>
+              {% endfor %}
+            </select>
+
+            <select name='day'>
+              {% for index, label in dayArr %}
+              <option value="{{index}}" {% if formData.day == index %} selected{% endif %}>{{ label }} </option>
+              {% endfor %}
+            </select>
+              {% if errArr.year | length > 0 %}<br><span class="red">{{errArr.year}}</span>{% endif %}
+              {% if errArr.month | length > 0 %}<br><span class="red">{{errArr.month}}</span>{% endif %}
+              {% if errArr.day | length > 0 %}<br><span class="red">{{errArr.day}}</span>{% endif %}
+          </td>
+        </tr>
+        
+        <tr class="regist_row">
+          <th class="regist_name">郵便番号<span class="red">*</span></th>
+            <td class="regist_zip">
+              <input type ="text" name="zip1" value="{{formData.zip1 | default('') }}" class="{{ errArr.zip1 | length > 0 ? "input_error" : '' }}" id="zip1" size="3" maxlength="3"> - <input type="text" name="zip2" value="{{formData.zip2 | default('') }}" class="{{ errArr.zip2 | length > 0 ? "input_error" : '' }}" id="zip2" size="4" maxlength="4">
+              <input type="button" name="address_search" value="〒から住所を入力" id="address_search">
+              {% if errArr.zip1 | length > 0 %}<br><span class="red">{{errArr.zip1}}</span>{% endif %}
+              {% if errArr.zip2 | length > 0 %}<br><span class="red">{{errArr.zip2}}</span>{% endif %}
+            </td>
+          </tr>
+        
+        <tr class="regist_row">
+          <th class="regist_name">住所<span class="red">*</span></th>
+          <td class="regist_address">
+            <input type="text" name="address" value="{{formData.address | default('') }}" class="{{ errArr.address | length > 0 ? "input_error" : '' }}" id="address" size="40">
+            {% if errArr.address | length > 0 %}<br><span class="red">{{errArr.address}}</span>{% endif %}    
+          </td>
+        </tr>
+        
+        <tr class="regist_row">
+          <th class="regist_name">メールアドレス<span class="red">*</span></th>
+          <td class="regist_email">
+            <input type="text" name="email" value="{{formData.email | default('') }}" class="{{ errArr.email | length > 0 ? "input_error" : '' }}" size="40">
+            {% if errArr.email | length > 0 %}<br><span class="red">{{errArr.email}}</span>{% endif %}
+            {% if duplicateEmail and not errArr.email %}
+            {# 重複メールがtrueでform.emailがからの場合 #}
+              <br><p class="red">こちらのメールアドレスは既に使用されています。</p>
+            {% endif %}
+            {% if delete and not errArr.email %}
+              <br><p class="red">{{ errArr.email }}</p>
+            {% endif %}
+          
+          </td>
+        </tr>
+        
+        <tr class="regist_row">
+          <th class="regist_name">電話番号<span class="red">*</span></th>
+          <td class="regist_data">
+            <input type="text" name="tel1" value="{{formData.tel1 | default('') }}" class="{{ errArr.tel1 | length > 0 ? "input_error" : '' }}" size="6" maxlength="6"> - 
+            {# maxlength文字数  size,文字数に合わせて幅も6にしてるだけ #}
+            <input type="text" name="tel2" value="{{formData.tel2 | default('') }}" class="{{ errArr.tel2 | length > 0 ? "input_error" : '' }}" size="6" maxlength="6"> - 
+            <input type="text" name="tel3" value="{{formData.tel3 | default('') }}" class="{{ errArr.tel3 | length > 0 ? "input_error" : '' }}" size="6" maxlength="6">
+            {% if errArr.tel1 | length > 0 %}<br><span class="red">{{errArr.tel1}}</span>{% endif %}
+            {% if errArr.tel2 | length > 0 %}<br><span class="red">{{errArr.tel2}}</span>{% endif %}
+            {% if errArr.tel3 | length > 0 %}<br><span class="red">{{errArr.tel3}}</span>{% endif %}
+          </td>
+        </tr>
+        
+        <tr class="regist_row">
+          <th class="regist_name">パスワード<span class="red">*</span></th>
+          <td class="regist_data">
+            <input type="password" name="password" value="{{formData.password | default('') }}" class="{{ errArr.password | length > 0 ? "input_error" : '' }}">
+            {% if errArr.password | length > 0 %}
+            <br><span class="red">{{errArr.password}}</span>{% endif %}
+          </td>
+        </tr>
+        {# <tr>
+          <th>パスワード確認<span class="red">*</span></th>
+          <td>
+            <input type="password" name="password_confirm" value="{{dataArr.password_confirm}}">
+            {% if dataArr.password_confirm | length > 0 %}
+            <br><span class="red">{{errArr.password_confirm}}</span>
+            {% endif %} 
+          </td>
+        </tr> #}
+
+      
+        {# <tr class="regist_row">
+          <th class="regist_name">好きな食材<span class="red">*</span></th>
+      
+          <td class="regist_data">
+            {% for index, label in trafficArr %}
+              <input type="checkbox" name="traffic[]" value="{{index}}" id="traffic_{{index}}" {% if index in dataArr.traffic %} checked="checked" {% endif %}>
+              <label for="traffic_{{index}}">{{ label }}</label>
+              {% endfor %}
+              {% if errArr.traffic | length > 0 %}<br>
+              <span class="red">{{errArr.traffic}}</span>{% endif %}
+          </td>
+        </tr> #}
+      </table>
+        <div class="regist_confirm">
+          <input type="submit" name="confirm" value="登録確認">
+        </div>
+    </form>
+  </section>
+
+</body>
+</html>
