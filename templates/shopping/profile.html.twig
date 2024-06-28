@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/profile.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/header.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/sidebar.css" rel="stylesheet" type="text/css" />
+    {# <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/footer.css" rel="stylesheet" type="text/css" /> #}
+   
+    
+    {# <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> #}
+    {# <script src="{{constant('shopping\\Bootstrap::APP_URL')}}js/common.js"></script> #}
+    <title>profile</title>
+  </head>
+  <body>
+    <header> 
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php">DT-Health </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+          <ul class="navbar-nav ms-auto my-2 my-lg-2 d-flex align-items-center">
+            <form class="d-flex search-form" role="search">
+            <input class="form-control me-2" type="search" placeholder="キーワード検索" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">search</button>
+            </form>
+
+            <li class="nav-item">
+              <a class="nav-link greeting" href="#">こんにちは <span style="font-weight: 500;">{{family_name}}</span> さん！</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle my-dropdown-toggle account" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                マイアカウント
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}profile.php">お客様情報</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order.php">注文履歴</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order.php">注文履歴詳細</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}contact.php">お問い合わせ</a></li>
+              </ul>
+     
+              <li class="nav-item">
+                <a class="nav-link cart" href="cart.php">
+                  <i class="bi bi-cart position-relative" style="font-size: 26px;">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger" style=" width: 24px; height: 24px; padding: 0; font-size: 13px; line-height: 24px;">
+                      {{sumNum == 0 ? '0' : sumNum}} 
+                      <!-- ここにカート内のアイテム数を動的に表示 -->
+                    </span>
+                  </i> 
+                </a>
+              </li>
+
+            <li class="nav-item login-out">
+              {% if isUserLogin %}
+                <a id="logoutButton" class="nav-link click" href="./login.php?logout=1" onclick="return logoutConfirm();">ログアウト</a>
+              {% else %}
+                <a class="nav-link click" href="./login.php">ログイン</a>
+              {% endif %}
+            </li>
+          </ul> 
+        </div>
+      </div>
+    </nav> 
+  </header>  
+ <section class="my-5">
+  <div class="container">
+    <div class="row profile-f">
+      <div class="col-3">
+        <div class="list-group">
+          <p class="list-ctg"><span class="underline-text">カテゴリー</span></p>
+    
+          <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}profile.php" class="list-info">お客様情報</a>
+          
+          <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order.php" class="list-info">注文履歴</a>
+          
+          <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order_detail.php" class="list-info">注文履歴詳細</a>
+          
+          <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}contact.php" class="list-info">お問い合わせ</a>
+        </div>
+      </div>
+
+      <div class="col-7 customer_info">
+      {% if isUserLogin %}
+        <h3>お客様情報</h3>
+        {# modal btn #}
+         <button class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editProfileModal">編集</button>
+           <table class="table-info">
+             <tr>
+               <td class="td-info">お名前(氏名)</td>
+               <td class="th-info">{{user.family_name}} {{user.first_name}}</td>
+               {# <td><button class="btn btn-edit" onclick="openEditModal('name')">編集</button></td> #}
+             </tr>
+             <tr>
+               <td class="td-info">メールアドレス</td>
+               <td class="th-info">{{user.email}}</td>
+               {# <td><button class="btn btn-edit" onclick="openEditModal('email')">編集</button></td> #}
+             </tr>
+             <tr>
+               <td class="td-info">生年月日</td>
+               <td class="th-info">{{user.year}}年 {{user.month}}月 {{user.day}}日</td>
+               {# <td><button class="btn btn-edit" onclick="openEditModal('year')">編集</button></td> #}
+             </tr>
+             <tr>
+               <td class="td-info">郵便番号</td>
+               <td class="th-info">{{user.zip1}} - {{user.zip2}}</td>
+               {# <td><button class="btn btn-edit" onclick="openEditModal('zip')">編集</button></td> #}
+             </tr>
+             <tr>
+               <td class="td-info">住所</td>
+               <td class="th-info">{{user.address}}</td>
+               {# <td><button class="btn btn-edit btn-edit" onclick="openEditModal('address')">編集</button></td>
+                </td> #}
+             </tr>
+             <tr>
+               <td class="td-info">電話番号</td>
+               <td class="th-info">{{user.tel1}} - {{user.tel2}} - {{user.tel3}}</td>
+               {# <td><button class="btn btn-edit" onclick="openEditModal('tel')">編集</button></td> #}
+             </tr>
+             <tr>
+              {# <td class="td-info">パスワード</td>
+              <td class="th-info">••••••••</td> #}
+              {# <td><button class="btn btn-edit" onclick="openEditModal('password')">編集</button></td> #}
+          </table>
+          {# <form method="post" action="profile.php.action=delete" id="delete"> #}
+          <form method="post" action="profile.php" id="delete">
+          
+            <button type="button" class="btn btn-custom" onclick="confirmWithDelete()">退会</button>
+            <input type="hidden" name="delete" value="1">
+          </form>
+          
+          {% else %}
+            <p style="color: #f00; padding: 20px 0;">購入履歴を表示するには、<a href="login.php" style="text-decoration: underline;">新規会員登録またはログイン</a>してください。</p>  
+          {% endif %}
+        </div>
+        {# col-7 #}
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container mt-4">
+      <!-- Modal -->
+      <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                    {# <h5 class="modal-title" id="editProfileModalLabel">お客様情報の編集</h5> #}
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="profile.php" method="POST" id="updateForm">
+              <div id="message"></div>
+              <div class="mb-3">
+                <label for="modalFamilyName" class="form-label">名前(氏)</label>
+                  <input type="text" class="form-control" id="modalFamilyName" name="family_name" value="{{user.family_name}}">
+                  {# {% if errArr.family_name | length > 0 %}<br><span class="color">{{errArr.family_name}}</span>{% endif %} #}
+              </div>
+              <div class="mb-3">
+                <label for="modalFirstName" class="form-label">名前(名)</label>
+                <input type="text" class="form-control" id="modalFirstName" name="first_name" value="{{user.first_name}}">
+              </div>
+              <div class="mb-3">
+                <label for="modalEmail" class="form-label">メールアドレス</label>
+                <input type="email" class="form-control" id="modalEmail" name="email" value="{{user.email}}">
+              </div>
+              <div class="mb-3">
+                <label for="modalBirthdate" class="form-label">生年月日</label>
+                  <div class="Birthdate-number">
+                    <input type="text" class="form-control Birthdate-input" id="modalBirthdate" name="year" value="{{user.year}}年">
+                    <input type="text" class="form-control Birthdate-input" id="modalBirthdate" name="month" value="{{user.month}}月">
+                    <input type="text" class="form-control Birthdate-input" id="modalBirthdate" name="day" value="{{user.day}}日">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="modalZipcode" class="form-label">郵便番号</label>
+                    <div class="zip-number">
+                      <input type="text" class="form-control zip-input" id="modalZipcode" name="zip1" value="{{user.zip1}}" maxlength="3"> 
+                      <input type="text" class="form-control zip-input" id="modalZipcode" name="zip2" value="{{user.zip2}}" maxlength="4">
+                    </div>
+                </div>                                   
+                <div class="mb-3">
+                <label for="modalAddress" class="form-label">住所</label>
+                <input type="text" class="form-control" id="modalAddress" name="address" value="{{user.address}}">
+                </div>
+                <div class="mb-3">
+                  <label for="modalPhone" class="form-label">電話番号</label>
+                  <div class="phone-number">
+                    <input type="text" class="form-control phone-input"  name="tel1" value="{{user.tel1}}">
+                    <input type="text" class="form-control phone-input" name="tel2" value="{{user.tel2}}">
+                    <input type="text" class="form-control phone-input" name="tel3" value="{{user.tel3}}">
+                  </div>
+                </div>
+                <div class="modal-footer button-modal">
+                  <button type="submit" class="btn btn-secondary btn-left" data-bs-dismiss="modal">閉じる</button>
+                  
+                  <button type="submit"  class="btn btn-primary btn-right">保存</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <section>
+
+    <footer>
+      <p>DT-Health</p>
+    </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{constant('shopping\\Bootstrap::APP_URL')}}js/logout.js"></script>
+  {# <script src="{{constant('shopping\\Bootstrap::APP_URL')}}js/shopping.js"></script> #}
+  <sctipt>
+    {# function confirmWithdrawal() {
+      if(confirm('本当に退会してもよろしいでしょうか？')) {
+        document.getElementById('delete-form).submit();
+      }
+    } #}
+  </sctipt>
+
+
+  </body>
+</html>
