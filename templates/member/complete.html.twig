@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>会員登録完了</title>
+  </head>
+  <body>
+    <div class="confirm">
+      <p>会員登録が完了しました</p>
+      {# <p><a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php">shoppingへ<a></p> #}
+      <p>姓: {{ family_name }}</p>
+      <p>メールアドレス: {{ email }}</p>
+    
+      <p><a href="{{next_url}}">ショッピングを続ける</a>
+      </p>
+    </div>
+  </body>
+</html>
