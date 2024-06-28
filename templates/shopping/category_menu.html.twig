@@ -1,0 +1,17 @@
+<div id="category">
+  <ul class="category_list">
+    {# 初期状態のアクセス時はget[ctg_id]は設定されてない状態なのでempty(から)でactiveのcssを指定, all-itemはclass #}
+    <li class="{{ currentCtg is empty ? 'active all-item': '' }}">
+    <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php?order={{ order == 'price ASC' ? 'asc' : 'desc' }}"><span class="ctg_name">全て</span><span class="ctg_number">({{ categories[0].total_count }})</span></a>
+    </li>
+  
+     {# categoriesの値をphpから取得しvalueに入れ、forループで値をループ、ifや条件式などでもその値を使い処理 #}
+    {% for value in categories %}
+    {% if value.ctg_id != '' %}
+    <li class="{{ currentCtg == value.ctg_id ? 'active' : '' }}">
+    <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php?ctg_id={{ value.ctg_id }}&order={{ order == 'price ASC' ? 'asc' : 'desc' }}"><span class="ctg_name">{{ value.category_name }}</span><span class="ctg_number">({{ value.total_count }})</span></a>
+    </li>
+     {% endif %}
+     {% endfor %}
+  </ul>
+</div>

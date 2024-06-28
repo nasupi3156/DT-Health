@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>会員一覧</title>
+  </head>
+  <body>
+    <table border="1">
+      <tr>
+        <th>ID</th>
+        <th>お名前</th>
+        <th>メール</th>
+        <th>性別</th>
+        <th>登録日時</th>
+        <th>編集リンク</th>
+      </tr>
+      {% for value in dataArr %}
+      {# dataArrを繰り返し処理してvalueをとってきている #}
+        <tr>
+          <td>
+            <a href="{{constant('member\\Bootstrap::ENTRY_URL')}}detail.php?mem_id={{value.mem_id}}">{{value.mem_id}}</a>
+          </td>
+          <td>
+            <span style="font-size:60%;">{{value.family_name_kana}}{{value.first_name_kana}}</span><br>{{value.family_name}}{{value.first_name}}
+          </td>
+          <td>{{value.email}}</td>
+          <td>{% if value.sex == '1' %}男性{% elseif value.sex == '2' %}女性{% endif %}</td>
+          
+          <td>{{value.regist_date}}</td>
+          <td>
+            <a href="{{constant('member\\Bootstrap::ENTRY_URL')}}update.php ? mem_id={{value.mem_id}}">編集</a>
+            {# update.phpを設定、URLを変え新規作成 #}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
+

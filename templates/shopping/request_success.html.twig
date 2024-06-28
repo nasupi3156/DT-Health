@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>パスワードリセット送信完了</title>
+  <style>
+    .container {
+       margin: 28px 8px;
+    }
+    h3 {
+      font-size: 20px;
+    }
+    a {   
+      color: blue;
+      font-size: 17px; 
+    }
+    a:hover {
+      opacity: 0.6;   
+    }
+  </style>
+<head>
+<body>
+  <div class="container">
+    <h3>パスワードリセットメールを送信しました。</h3>
+    <p>ご登録のメールアドレスにパスワードリセットの手順を記載したメールを送信しました。メールを確認し、パスワードリセットの手続きを完了してください。</p>
+   
+    <p>もしメールが届かない場合、迷惑メールフォルダを確認するか、再度メールアドレスを入力して送信してください。</p>
+    <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}login.php" class="back">ログイン画面へ戻る</a>
+  </div>
+</body>
+</html>

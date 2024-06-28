@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{constant('member\\Bootstrap::APP_URL')}}js/common.js"></script>
+    {# <link href="{{constant('member\\Bootstrap::APP_URL')}}css/style.css" rel="stylesheet"> #}
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/regist.css" rel="stylesheet" type="text/css" />
+    <title>会員登録</title>
+  </head>
+  <body>
+    {# type="hidden"は画面表示させない #}
+    {# post通信した時データは送られるが、ブラウザー表示では見れない #}
+  <section class="form_section">
+    <h1>新規会員登録</h1>
+    <input type="hidden" name="entry_url" id="entry_url" value="{{constant('member\\Bootstrap::ENTRY_URL')}}">
+    <form class="regist_form" method="post" action="confirm.php">
+      <table class="regist_table">
+        <tr class="regist_row">
+          <th class="regist_name">お名前(氏名)<span class="red">*</span></th>
+          <td class="regist_data">
+            <input type="text" name="family_name" value="{{dataArr.family_name}}">
+            <input type="text" name="first_name" value="{{dataArr.first_name}}">
+            {% if errArr.family_name | length > 0 %}<br><span class="red">{{ errArr.family_name }}</span>{% endif %}
+            {% if errArr.first_name | length > 0 %}<br><span class="red">{{ errArr.first_name }}</span>{% endif %}
+          </td>
+        </tr>
+
+        <tr class="regist_row">
+          <th class="regist_name">お名前(カナ)<span class="red">*</span></th>
+          <td class="regist_data">
+            <input type="text" name="family_name_kana" value="{{dataArr.family_name_kana}}">
+            <input type="text" name="first_name_kana" value="{{dataArr.first_name_kana}}">
+          </td>
+        </tr>
+
+        <tr class="regist_row">
+          <th class="regist_name">性別<span class="red">*</span></th>
+          <td class="regist_data">
+            {% for index, label in sexArr %}
+              <input type="radio" name="sex" value="{{index}}" id="sex_{{index}}"{% if dataArr.sex == index %} checked="checked" {% endif %}>
+              <label for="sex_{{index}}">{{label}}</label>
+              {# 最初のループindex男性,次のループlebel女性, #}
+            {% endfor %}
+            {% if errArr.sex | length> 0 %}<br><span class="red">{{errArr.sex}}</span>{% endif %}
+          </td>
+        </tr>
+
+        <tr class="regist_row">
+          <th class="regist_name">生年月日<span class="red">*</span></th>
+          <td class="regist_data">
+            <select name="year">
+              {% for index, label in yearArr %}
+              <option value="{{index}}" {% if dataArr.year == index %} selected{% endif %}>{{ label }} </option>
+              {% endfor %}
+            </select>
+
+            <select name='month'>
+              {% for index, label in monthArr %}
+              <option value="{{index}}" {% if dataArr.month == index %} selected{% endif %}>{{ label }} </option>
+              {% endfor %}
+            </select>
+
+            <select name='day'>
+              {% for index, label in dayArr %}
+              <option value="{{index}}" {% if dataArr.day == index %} selected{% endif %}>{{ label }} </option>
+              {% endfor %}
+            </select>
+              {% if errArr.year | length > 0 %}<br><span class="red">{{errArr.year}}</span>{% endif %}
+              {% if errArr.month | length > 0 %}<br><span class="red">{{errArr.month}}</span>{% endif %}
+              {% if errArr.day | length > 0 %}<br><span class="red">{{errArr.day}}</span>{% endif %}
+          </td>
+        </tr>
+        
+        <tr class="regist_row">
+          <th class="regist_name">郵便番号<span class="red">*</span></th>
+            <td class="regist_zip">
+              {# calssをregist_dataから変更 #}
+              <input type ="text" name="zip1" value="{{dataArr.zip1}}" id="zip1" size="3" maxlength="3"> - <input type="text" name="zip2" value="{{dataArr.zip2}}" id="zip2" size="4" maxlength="4">
+              <input type="button" name="address_search" value="〒から住所を入力" id="address_search">
+              {% if errArr.zip1 | length > 0 %}<br><span class="red">{{errArr.zip1}}</span>{% endif %}
+              {% if errArr.zip2 | length > 0 %}<br><span class="red">{{errArr.zip2}}</span>{% endif %}
+            </td>
+          </tr>
+        
+        <tr class="regist_row">
+          <th class="regist_name">住所<span class="red">*</span></th>
+          <td class="regist_address">
+            <input type="text" name="address" value="{{dataArr.address}}" id="address" size="40">
+            {% if errArr.address | length > 0 %}<br><span class="red">{{errArr.address}}</span>{% endif %}    
+          </td>
+        </tr>
+        
+        <tr class="regist_row">
+          <th class="regist_name">メールアドレス<span class="red">*</span></th>
+          <td class="regist_email">
+            <input type="text" name="email" value="{{dataArr.email}}" size="40">
+            {% if errArr.email | length > 0 %}<br><span class="red">{{errArr.email}}</span>{% endif %}
+          </td>
+        </tr>
+        
+        <tr class="regist_row">
+          <th class="regist_name">電話番号<span class="red">*</span></th>
+          <td class="regist_data">
+            <input type="text" name="tel1" value="{{dataArr.tel1}}" size="6" maxlength="6"> - 
+            {# maxlength文字数  size,文字数に合わせて幅も6にしてるだけ #}
+            <input type="text" name="tel2" value="{{dataArr.tel2}}" size="6" maxlength="6"> - 
+            <input type="text" name="tel3" value="{{dataArr.tel3}}" size="6" maxlength="6">
+            {% if errArr.tel1 | length > 0 %}<br><span class="red">{{errArr.tel1}}</span>{% endif %}
+            {% if errArr.tel2 | length > 0 %}<br><span class="red">{{errArr.tel2}}</span>{% endif %}
+            {% if errArr.tel3 | length > 0 %}<br><span class="red">{{errArr.tel3}}</span>{% endif %}
+          </td>
+        </tr>
+        
+        <tr class="regist_row">
+         <th class="regist_name">パスワード<span class="red">*</span></th>
+         <td class="regist_data">
+           <input type="password" name="password" value="{{dataArr.password}}">
+           {% if errArr.password | length > 0 %}
+           <br><span class="red">{{errArr.password}}</span>{% endif %}
+          </td>
+        </tr>
+        {# <tr>
+          <th>パスワード確認<span class="red">*</span></th>
+          <td>
+            <input type="password" name="password_confirm" value="{{dataArr.password_confirm}}">
+            {% if dataArr.password_confirm | length > 0 %}
+            <br><span class="red">{{errArr.password_confirm}}</span>
+            {% endif %} 
+          </td>
+        </tr> #}
+
+     
+        {# <tr class="regist_row">
+          <th class="regist_name">お好みの食品<span class="red">*</span></th>
+          <td class="regist_data">
+            {% for index, label in trafficArr %}
+              <input type="checkbox" name="traffic[]" value="{{index}}" id="traffic_{{index}}" {% if index in dataArr.traffic %} checked="checked" {% endif %}>
+              <label for="traffic_{{index}}">{{ label }}</label>
+              {% endfor %}
+              {% if errArr.traffic | length > 0 %}<br>
+              <span class="red">{{errArr.traffic}}</span>{% endif %}
+          </td>
+        </tr> #}
+        {# <tr> #}
+          {# <th>備考</th>
+          <td>
+            <textarea name="contents" rows="4" cols="40">{{dataArr.contents}}</textarea>
+          </td>
+        </tr> #}
+        {# 消し追加 #}
+
+      </table>
+      <div class="regist_confirm">
+        <input type="submit" name="confirm" value="登録確認">
+      </div>
+    </form>
+  </section>
+  {# form_section #}
+
+  <script>
+    // エラーがある場合にregist_data内の要素に.errorクラスを追加する
+{# if ($('input[name=family_name]').val().trim() === '' || $('input[name=first_name]').val().trim() === '') {
+  $('.regist_data').addClass('error');
+} else {
+  $('.regist_data').removeClass('error');
+} #}
+
+
+  
+</script>
+
+
+  </script>
+  </body>
+</html>

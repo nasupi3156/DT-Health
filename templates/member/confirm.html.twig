@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>会員登録確認</title>
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/confirm.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="contaier">
+     
+      <form class="confirm_form" method="post" action="confirm.php">
+        <h1>会員登録</h1>
+      <table class="confirm_table">
+        <tr>
+          <th class="confirm_name">お名前(氏名)</th>
+          <td class="confirm_data">{{dataArr.family_name}} {{dataArr.first_name}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">お名前(カナ)</th>
+          <td class="confirm_data">{{dataArr.family_name_kana}}{{dataArr.first_name_kana}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">性別</th>
+          <td class="confirm_data">{% if dataArr.sex == '1'%}男性{% elseif dataArr.sex == '2' %}女性{% endif %}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">生年月日</th>
+          <td class="confirm_data">{{dataArr.year}}年 {{dataArr.month}}月 {{dataArr.day}}日</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">郵便番号</th>
+          <td class="confirm_data">{{dataArr.zip1}} - {{dataArr.zip2}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">住所</th>
+          <td class="confirm_data">{{dataArr.address}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">メールアドレス</th>
+          <td class="confirm_data">{{dataArr.email}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">電話番号</th>
+          <td class="confirm_data">{{dataArr.tel1}} - {{dataArr.tel2}} - {{dataArr.tel3}}</td>
+        </tr>
+        <tr>
+          <th class="confirm_name">パスワード</th>
+          <td class="confirm_data">{{dataArr.password}}</td>
+        </tr>
+
+        {# <tr>
+          <th>パスワード確認</th>
+          <td>{{dataArr.password_confirm}}</td>      
+        </tr> #}
+        
+        <tr>
+          <th class="confirm_name">お好みの食品</th>
+          <td class="confirm_data">{% for index in dataArr.traffic %}{{trafficArr[index]}}<br>{% endfor %}</td>
+        </tr> 
+        <tr>
+          {# <th>備考</th>
+          <td>{{dataArr.contents|nl2br}}</td>
+        </tr> #}
+        {# 消し追加 #}
+
+      </table>
+
+        <div class="complete_form">
+          <input type="submit" name="back" value="修正する" class="back_button">
+          <input type="submit" name="complete" value="登録する" class="regist_button">
+          
+          {# confirm.phpの値はinputじゃないが、それをどうやってとってきてるのかというのが下記のfor文などから #}
+          {% for key, value in dataArr %}
+          <!-- ↓下記メソッドで配列か否かをチェックしている iterable --> 
+          {% if value is iterable %}
+          {# 配列に関しての処理(この場合はtraffic) #}
+          {% for v in value %}
+        <input type="hidden" name="{{key}}[]" value="{{v}}">
+      {% endfor %}
+    {% else %}
+        <input type="hidden" name="{{key}}" value="{{value}}">
+        {# input type="hidden" ブラウザーに表示されない処理 #}
+        {# 画面表示させないけどkeyとvalueのデータを作っている #}
+        {# 画面表示はしないけどデータは作っている処理 #}
+      {% endif %}
+    {% endfor %}
+        </div>
+        {# complete_form #}
+      </form> 
+    </div>
+    {# container #}
+  </body>
+</html>
+
+ {# 戻るや登録完了画面でinput textとかじゃないので、このデータをどうやってとってきているかというとfor文の中の処理 #}
+ 
+{# 上記のfor文でconfirm.php部分で,入力フォームはないけど、データをdataArrでとってきて,それを繰り返し処理し、それを画面には見えないがPOST通信しデータを入れる処理をここでしている。submitでbackした時にデータ保持させてるのはそのような仕組み。 #}
