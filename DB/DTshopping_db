@@ -1,0 +1,564 @@
+
+CREATE DATABASE DTshopping_db DEFAULT CHARACTER SET utf8;	
+
+GRANT ALL PRIVILEGES ON DTshopping_db.* TO DTshopping_user@'localhost' IDENTIFIED BY 'DTshopping_pass' WITH GRANT OPTION;	
+
+USE DTshopping_db;
+
+
+; RENAME TABLE table1 TO table2;
+; テーブル名変更
+
+; ALTER TABLE: 既存のテーブルの構造を変更するSQLコマンド
+
+; 新規登録
+CREATE TABLE signup(
+  mem_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  family_name VARCHAR(20) NOT NULL,
+  first_name VARCHAR(20) NOT NULL,
+  family_name_kana VARCHAR(20) NOT NULL,
+  first_name_kana VARCHAR(20) NOT NULL,
+  sex TINYINT(1) UNSIGNED NOT NULL,
+  year VARCHAR(4) NOT NULL, 
+  month VARCHAR(2) NOT NULL, 
+  day VARCHAR(2) NOT NULL,
+  zip1 VARCHAR(3) NOT NULL, 
+  zip2 VARCHAR(4) NOT NULL, 
+  address VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE, 
+  tel1 VARCHAR(5) NOT NULL,
+  tel2 VARCHAR(4) NOT NULL, 
+  tel3 VARCHAR(4) NOT NULL, 
+  password VARCHAR(100) NOT NULL,
+  regist_date DATETIME NOT NULL,
+  update_date DATETIME,
+  delete_date DATETIME,
+  delete_flg TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (mem_id)
+);
+
+ALTER TABLE signup MODIFY sex VARCHAR(10);
+; 数値からemailに変えたので、TINYINTからVARCHAR(10)に変更
+
+; TINYINT(1) UNSIGNED、両方をつけると正の数値だけになり255まで範囲が増える
+; TINYINTは-128 から 127 までの数値
+; UNSIGNEDは0から255、実際はUNSIGNED単独では使えない、負の整数を取らないで正の整数の拡大する役割を持っている、年齢や在庫数など、マイナスにならない数値を扱うときに便利
+
+; (1)ブール値（TRUE/FALSE、または 1/0）これはMySQL特有の慣習
+; emailのUNIQUE : 制約をカラムに設定すると、そのカラムに重複した値を持つレコードをテーブルに挿入することができなくなる。
+; 同じメールアドレスを持つ複数のアカウントが作成されることを防ぎ、ユーザー認証などでの混乱を避けることが可能。
+
+; お問い合わせ
+
+CREATE TABLE contact (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  contents TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+; delete_flg追加
+ALTER TABLE contact ADD delete_flg TINYINT(1) DEFAULT 0;
+
+
+; created_at: レコードが作成された日時を自動的に記録するためのフィールド。デフォルトで現在のタイムスタンプ設定
+
+; 商品テーブル	
+CREATE TABLE item (	
+item_id int unsigned not null auto_increment,	
+item_name varchar(100) not null,	
+detail text not null,	
+price DECIMAL(10,3) unsigned not null, 
+image varchar(50) not null,	
+ctg_id tinyint unsigned not null,	
+primary key( item_id ),	
+index item_idx( ctg_id ) 
+);	
+
+; DECIMAL型からint型に変更
+ALTER TABLE item MODIFY price INT UNSIGNED;
+
+;  インデックス：データの検索速度を向上させるために、どの行がどこにあるかを示した索引のこと	
+
+;  price DECIMAL(10,3) unsigned not null, //デシマル:decimal(最大桁数、小数点以下の桁数)
+
+
+; カート(取引)	
+CREATE TABLE cart (	
+crt_id int unsigned not null auto_increment,	
+customer_no int unsigned not null,	
+item_id int unsigned not null,	
+num tinyint(1) unsigned not null default 1,	
+delete_flg tinyint(1) unsigned not null default 0,	
+primary key( crt_id ),	
+index crt_idx( customer_no, delete_flg )	
+);	
+
+; cartテーブルにカートの数量増やすため追加
+ALTER TABLE cart
+ADD COLUMN quantity tinyint(1) unsigned not null default 1;
+
+
+	
+; カテゴリー	
+CREATE TABLE category (	
+ctg_id tinyint unsigned not null auto_increment,	
+category_name varchar(100) not null,	
+primary key(ctg_id)	
+);	
+
+; カテゴリー	
+CREATE TABLE category_season (	
+ctg_id tinyint unsigned not null auto_increment,	
+category_name varchar(100) not null,	
+primary key(ctg_id)	
+);	
+	
+
+; 顧客の認識	
+CREATE TABLE session (	
+customer_no int unsigned not null auto_increment,	
+session_key varchar(32),	
+primary key(customer_no)	
+);	
+
+; ordersテーブル
+CREATE TABLE orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    family_name VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    zip1 VARCHAR(10),
+    zip2 VARCHAR(10),
+    address VARCHAR(255),
+    tel1 VARCHAR(20),
+    tel2 VARCHAR(20),
+    tel3 VARCHAR(20),
+    shipping_fee DECIMAL(10,2) NOT NULL,
+    total_price DECIMAL(10,2) NOT NULL,
+    payment_method VARCHAR(50),
+    purchase_date DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES session(user_id)
+);
+
+; 外部キー制約をcustomer_noからuser_idに変更
+ALTER TABLE orders ADD COLUMN user_id INT UNSIGNED;
+
+ALTER TABLE orders ADD CONSTRAINT fk_orders_user_id FOREIGN KEY (user_id) REFERENCES signup(user_id);
+
+; customer_noからuser_idに変更
+ALTER TABLE orders DROP FOREIGN KEY orders_ibfk_1; 
+; -- 既存の外部キー制約を削除
+ALTER TABLE orders DROP COLUMN customer_no; 
+; -- 既存のcustomer_noカラムを削除
+
+; 削除
+ALTER TABLE orders DROP COLUMN user_id;
+
+; 外部キー削除してから
+ALTER TABLE orders DROP FOREIGN KEY fk_orders_user_id;
+
+; orders変更
+CREATE TABLE orders (
+  order_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  family_name VARCHAR(255) NOT NULL,
+  first_name VARCHAR(255) NOT NULL,
+  zip1 VARCHAR(10),
+  zip2 VARCHAR(10),
+  address VARCHAR(255),
+  tel1 VARCHAR(20),
+  tel2 VARCHAR(20),
+  tel3 VARCHAR(20),
+  shipping_fee DECIMAL(10,2) NOT NULL,
+  total_price DECIMAL(10,2) NOT NULL,
+  payment_method VARCHAR(50),
+  purchase_date DATETIME NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES signup(user_id)
+);
+
+; delete_flgを追加
+ALTER TABLE orders
+ADD COLUMN delete_flg TINYINT(1) DEFAULT 0 NOT NULL;
+
+; 変更
+ALTER TABLE orders MODIFY shipping_fee INT UNSIGNED;
+ALTER TABLE orders MODIFY total_price INT UNSIGNED;
+
+; UNSIGNEDは数値が常に正であることを示し、外部キー制約（FOREIGN KEY）とREFERENCESキーワードは、テーブル間の関係を確立し維持し、データベース全体のデータ整合性を保証する。
+
+; Order Detailsテーブル
+CREATE TABLE order_details (
+    detail_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    item_id INT NOT NULL,
+    image VARCHAR(255),
+    item_name VARCHAR(255),
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
+; delete_flgを追加
+ALTER TABLE order_details ADD delete_flg TINYINT(1) DEFAULT 0;
+
+
+; 変更
+ALTER TABLE order_details MODIFY price INT UNSIGNED;
+
+; item_imageをimageに変換
+ALTER TABLE order_details CHANGE item_image image VARCHAR(255);
+
+-> control + c
+
+; 小さな整数(1から127までの数字が小さな整数)（tinyint）
+; ゼロか正の数しか受け付けない : 「ゼロか正の数」とは、0か1以上の数字のことです。負の数（-1や-5）は受け付けません。（unsigned）
+
+; 空っぽにはできない（not null）: 箱には何かしらのデータが必ず入ってる
+
+auto_increment
+; 最初に行が追加されると番号は1、次に行が追加されると番号は2、そして3、4、と続き、新しい行が追加されるたびに1ずつ増える
+
+; category_name v
+; archar(100) not null: category_nameという箱は、最大100文字の文字列を受け付けるよ、空っぽにはできないよ
+; primary key(ctg_id): ctg_idはこのテーブルの中で特別なキー（一意の識別子）で、同じ番号が2回以上出てくることはないよ
+
+; 新規登録変更
+; -- ユーザー情報を管理するテーブル
+CREATE TABLE signup (
+  user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  family_name VARCHAR(20) NOT NULL,
+  first_name VARCHAR(20) NOT NULL,
+  family_name_kana VARCHAR(20) NOT NULL,
+  first_name_kana VARCHAR(20) NOT NULL,
+  sex VARCHAR(10) NOT NULL,
+  year VARCHAR(4) NOT NULL, 
+  month VARCHAR(2) NOT NULL, 
+  day VARCHAR(2) NOT NULL,
+  zip1 VARCHAR(3) NOT NULL, 
+  zip2 VARCHAR(4) NOT NULL, 
+  address VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE, 
+  tel1 VARCHAR(5) NOT NULL,
+  tel2 VARCHAR(4) NOT NULL, 
+  tel3 VARCHAR(4) NOT NULL, 
+  password VARCHAR(100) NOT NULL,
+  regist_date DATETIME NOT NULL,
+  update_date DATETIME,
+  delete_date DATETIME,
+  delete_flg TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (user_id)
+);
+
+ALTER TABLE signup ADD COLUMN is_deleted BOOLEAN DEFAULT FALSE;
+; 論理削除、データ型BOOLEAN(真偽値)を設定、初期値はfalse、ユーザが削除されてないことを示す 
+; MySQLでは、BOOLEAN型は TINYINT(1) として格納、なので0がfalseで1がtrue
+
+ALTER TABLE signup ADD COLUMN logged_in BOOLEAN DEFAULT FALSE;
+; ユーザがログインしてるかログアウトしてるか
+
+ALTER TABLE signup ADD COLUMN is_admin BOOLEAN DEFAULT FALSE;
+; 全ての新規および既存のユーザーレコードでis_adminフィールドをFALSEとして設定し、特定のユーザー（管理者）のみをTRUEに設定して管理者アクセスを与える
+; is_adminというBOOLEAN型の列を追加
+
+UPDATE signup SET is_admin = TRUE WHERE email = 'メールアドレス';
+; emailユーザをis_adminでtrue(今回は0か1)
+
+; セッション情報に外部キー制約user_idをつけたテーブル、複雑なので使わない。
+CREATE TABLE session (
+  customer_no INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  session_key VARCHAR(32) NOT NULL,
+  user_id INT UNSIGNED,
+  FOREIGN KEY (user_id) REFERENCES signup(user_id),
+  PRIMARY KEY (customer_no)
+);
+
+; customer_noはsession管理をするためなので、ユーザ管理と別にする必要がありcustomer_noとは別にuser_idを作成。
+; sessionテーブルにuser_idを外部キーとして持たせ、どのユーザーのセッションであるかを追跡する
+; signupテーブルには各ユーザーにuser_idを割り当て、sessionテーブルではセッション毎にcustomer_noを割り当て、sessionテーブルにuser_idカラムも追加して、どのユーザーのセッションかを分かるようにする。これにより、セッション管理とユーザー管理の両方の要件を満たすことができる。
+; この設計では、signupテーブルとsessionテーブルの間でuser_idを共有する形
+; sessionテーブルにcustomer_noを設ける理由 : セッションごとに一意の識別子を割り当てるため。customer_noはセッション管理のための内部的なIDとして機能し、セッション毎に異なる値を持ち、これにより複数のセッションを区別し、管理することができる。
+
+;　一人のユーザーが複数のデバイス（スマートフォン、パソコンなど）からサービスにアクセスする場合、それぞれのデバイスで異なるセッションが発生。この場合、user_idは同じでも、それぞれのセッションには異なるcustomer_noが割り当てられるため、デバイスごとのセッションを個別に追跡できる。
+
+; user_idはユーザーの識別子として機能し、customer_noは個々のセッションの識別子として機能する。これによりユーザー情報とセッション情報を効果的に管理し、紐付けることができる。
+
+; customer_noはセッションを一意に識別するために必要であり、ユーザーとセッションの関係を明確にするために、user_idを使用してユーザー情報とセッション情報を結びつる。
+
+; テーブルの主キー（PRIMARY KEY) 各ユーザーに一意な値を割り当て、ユーザー情報（family_name, first_nameなど）を一意に識別するために使用する
+
+; FOREIGN KEY (customer_no) REFERENCES signup(customer_no) ,sessionテーブルの外部キー制約, sessionテーブルのcustomer_noがsignupテーブルのcustomer_noと結べつけられる。
+; これにより、セッションとユーザー情報が適切に紐付けられ、どのユーザーがどのセッションIDを持っているかを追跡できる。
+
+CREATE TABLE password_reset (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    expires TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES signup(user_id)
+);
+
+; FOREIGN KEY (user_id)外部キー
+; 外部キー制約でINTとINT UNSIGNEDのデータ型でエラー
+; INT : 正と負の数両方、INT UNSIGNED : 正の数だけ、なのでINT UNSIGNEDの方が扱える正の値の範囲が多いが、負の値を扱う可能性がある場合は、INTを使用した方がいい
+
+; email: リセットをリクエストするユーザーのメールアドレスを保存します。これはリセットリンクを送信し、後の段階でユーザーを識別するために使用されます。
+; token: 安全に生成され、リセットリンクの一部として送信される一意のトークンです。このトークンは、リンクを通じてパスワードをリセットしようとするユーザーを検証するために使用されます。
+; expires_at: トークンが無効になる日時です。これにより、リセットリンクを使用できる時間窓が制限され、セキュリティが向上します。
+
+; ログインおよびログアウトの活動を追跡するテーブル。
+CREATE TABLE user_sessions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  login_time DATETIME,
+  logout_time DATETIME,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+; ALTER TABLE users DROP COLUMN logged_in;
+; DROPで削除
+
+INSERT INTO category VALUES ( 1, '野菜' );
+INSERT INTO category VALUES ( 2, '果物' );
+INSERT INTO category VALUES ( 3, '飲料' );
+INSERT INTO category VALUES ( 4, '肉類')
+INSERT INTO category VALUES ( 5, '魚介類');
+INSERT INTO category VALUES ( 6, '豆類');
+
+
+
+INSERT INTO category VALUES ( 1, '肉・魚' );
+INSERT INTO category VALUES ( 2, '卵・豆' );
+INSERT INTO category VALUES ( 3, '乳製品' );
+INSERT INTO category VALUES ( 4, '野菜');
+INSERT INTO category VALUES ( 5, '果物');
+INSERT INTO category VALUES ( 6, '穀類');
+
+INSERT INTO category_n VALUES ( 7, 'タンパク質' );
+INSERT INTO category_n VALUES ( 8, '脂質' );
+INSERT INTO category_n VALUES ( 9, '炭水化物' );
+INSERT INTO category_n VALUES ( 10, 'ビタミン');
+INSERT INTO category_n VALUES ( 11, 'ミネラル');
+
+INSERT INTO category VALUES ( 1, '野菜' );
+INSERT INTO category VALUES ( 2, '果物' );
+INSERT INTO category VALUES ( 3, '肉類' );
+INSERT INTO category VALUES ( 4, '飲料' );
+
+
+; これを使っている1月26日現在
+INSERT INTO category VALUES ( 1, '野菜' );
+INSERT INTO category VALUES ( 2, '果物' );
+INSERT INTO category VALUES ( 3, '穀類' );
+INSERT INTO category VALUES ( 4, '乳製品');
+INSERT INTO category VALUES ( 5, '肉・魚');
+INSERT INTO category VALUES ( 6, '卵・豆');
+
+INSERT INTO category VALUES ( 1, '野菜' );
+INSERT INTO category VALUES ( 2, '果物' );
+INSERT INTO category VALUES ( 3, 'その他' );
+
+INSERT INTO category_season VALUES ( 4, '春' );
+INSERT INTO category_season VALUES ( 5, '夏' );
+INSERT INTO category_season VALUES ( 6, '秋' );
+INSERT INTO category_season VALUES ( 7, '冬' );
+
+
+データベースからカラムを削除
+ALTER TABLE member
+DROP COLUMN password_confirm;
+
+// contact : お問い合わせ
+create table contact(
+  id int unsigned not null auto_increment primary key,
+  name varchar(255) not null, 
+  contents text not null
+);
+
+INSERT INTO item VALUES ( 1, 'たまねぎ', 'たまねぎ(愛媛県産)旬の季節は、秋から冬です。栄養素は、クエルセチン（強力な抗酸化物質）、ビタミンC、ビタミンB6、カリウムが豊富に含まれています。', 150, 'tamanegi.jpg', 1 );
+
+INSERT INTO item VALUES ( 2, 'にんじん', 'にんじん(茨城県産)旬の季節は、秋から冬です。栄養素は、クエルセチン（強力な抗酸化物質）、ビタミンC、ビタミンB6、カリウムが豊富に含まれています。', 100, 'ninjin.jpg', 1 );
+
+INSERT INTO item VALUES ( 3, 'ピーマン', 'ピーマン(高知県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンB6、ビタミンA、カプサイシン（特に赤ピーマン）が豊富に含まれています。', 120, 'pi-man.jpg', 1 );
+
+INSERT INTO item VALUES ( 4, 'なす', 'なす(熊本県産)旬の季節は、夏です。栄養素は、ナスニン（抗酸化物質）、食物繊維、ビタミンB1、ビタミンB6が豊富に含まれています', 110, 'nasu.jpg', 1 );
+
+INSERT INTO item VALUES ( 5, 'ねぎ', 'ねぎ(千葉県産)旬の季節は、冬です。栄養素は、アリシン（抗菌・抗ウイルス作用）、ビタミンC、鉄、食物繊維が豊富に含まれています', 110, 'negi.jpg', 1 );
+
+INSERT INTO item VALUES ( 6,  'ほうれんそう', 'ほうれんそう(埼玉県産)旬の季節は、冬から秋です。栄養素は、β-カロテン、ビタミンC、ビタミンK、鉄、葉酸が豊富に含まれています。', 80, 'hourenso.jpg', 1 );
+
+INSERT INTO item VALUES ( 7,  'みかん', 'みかん(愛媛県産)旬の季節は、冬です。栄養素は、ビタミンC、ビタミンA、カリウム、食物繊維が豊富に含まれています。', 250, 'orange.jpg', 2 );
+
+INSERT INTO item VALUES ( 8,  'しめじ', 'しめじ(新潟県産)旬の季節は、秋です。栄養素は、β-グルカン（免疫力を高める）、ビタミンD、ビタミンB群、鉄分が豊富に含まれています。', 100, 'simeji.jpg', 1 );
+
+INSERT INTO item VALUES ( 9,  'はくさい', 'はくさい(茨城県産)旬の季節は、冬です。栄養素は、ビタミンC、ビタミンK、食物繊維、カルシウムが豊富に含まれています。', 200, 'hakusai.jpg', 1 );
+
+INSERT INTO item VALUES ( 10,  'さつまいも', '旬の季節は、秋です。栄養素は、β-カロテン、ビタミンC、ポタシウム、食物繊維が豊富に含まれています。', 290, 'satumaimo.jpg', 1 );
+
+INSERT INTO item VALUES ( 11,  'バナナ', 'バナナ(フィリピン産)一年中(輸入)、栄養素は、カリウム、ビタミンB6、ビタミンC、マグネシウムが豊富に含まれています。。', 130, 'banana.jpg', 2 );
+
+INSERT INTO item VALUES ( 12,  'キャベツ', 'キャベツ(群馬県産)旬の季節は、春から初夏、秋から冬です。栄養素は、ビタミンC、ビタミンK、食物繊維、葉酸が豊富に含まれています。', 160, 'kyabetu.jpg', 1 );
+
+INSERT INTO item VALUES ( 13, 'エリンギ', 'エリンギ(長野県産)一年通して収穫できます。栄養素は、ビタミンD、食物繊維、カリウム、β-グルカンが豊富に含まれています。。', 90, 'eringi.jpg', 1 );
+
+INSERT INTO item VALUES ( 14,  'なし', 'なし(千葉県産)旬の季節は、秋です。栄養素は、ビタミンC、ビタミンK、食物繊維、カリウムが豊富に含まれています。。', 350, 'nasi.jpg', 2 );
+
+INSERT INTO item VALUES ( 15, 'ブロッコリー', 'ブロッコリー(茨城県産)旬の季節は、冬から春です。栄養素は、ビタミンC、ビタミンK、葉酸、カルシウム、硫黄化合物（発がん性物質の抑制に役立つ）が豊富に含まれています。', 180, 'burokori.jpg', 1 );
+
+INSERT INTO item VALUES ( 16,  '豚肉', '豚肉(国産)年間通して食べられる人気の年間通して食べられる人気の食材です。栄養素は、ビタミンB1（チアミン）、高品質のタンパク質、鉄分、亜鉛、セレン(抗酸化物質であり、細胞の健康を守る)が豊富に含まれています。', 550, 'buta.jpg', 3 );
+
+INSERT INTO item VALUES ( 17,  'アボカド', 'アドカド(海外産)1年中収穫されますが、旬は春です。栄養素は、不飽和脂肪酸、ビタミンE、カリウムが豊富に含まれています。', 100, 'abokado.jpg', 2 );
+
+INSERT INTO item VALUES ( 18,  'ぶどう', 'ぶどう(山梨県産)旬の季節は夏の終わりから秋です。栄養素はビタミンCやポリフェノール（特にレスベラトロール）が豊富で、抗酸化作用があります。', 400, 'budo.jpg', 2 );
+
+INSERT INTO item VALUES ( 19,  'ごぼう', 'ごぼう(青森県産)旬の季節は、秋から冬です。栄養素は、食物繊維が非常に豊富で、特にイヌリンの含有量が高いです。またカリウムやビタミンB群も含まれています。', 140, 'gobo.jpg', 1 );
+
+INSERT INTO item VALUES ( 20,  'マイタケ', 'マイタケ(新潟県産)旬の季節は秋です。栄養素は、ビタミンD、特にマイタケにはβ-グルカンという免疫系をサポートする繊維質が含まれています。', 80, 'maitake.jpg', 1 );
+
+INSERT INTO item VALUES ( 21,  'シイタケ', 'シイタケ(長野県産)旬の季節は秋から春です。栄養素は、ビタミンD、ビタミンB、銅、セレン(抗酸化ミネラルで、免疫力を高め、細胞の損傷を防ぎます)が豊富です。', 110, 'sitake.jpg', 1 );
+
+INSERT INTO item VALUES ( 22,  'とうもろこし', 'とうもろこし(北海道産)旬の季節は、夏の終わりから秋です。栄養素は、ビタミンB群と食物繊維が含まれており、健康な消化系を支えるのに役立ちます。', 220, 'tomorokosi.jpg', 2 );
+
+
+INSERT INTO item VALUES ( 23,  'りんご', 'りんご(青森県産)旬の季節は、秋です。栄養素は、食物繊維、ビタミンC、カリウム、ポリフェノールが豊富に含まれています。', 230, 'mikan.jpg', 1 );
+
+INSERT INTO item VALUES ( 24,  'ブラックベリー', 'ブラックベリー(海外産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンK、食物繊維、マンガンが豊富に含まれています。', 550, 'mikan.jpg', 1 );
+
+INSERT INTO item VALUES ( 25,  'ブルーベリー', 'ブルーベリー(群馬県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンK、マンガン、抗酸化物質が豊富に含まれています。', 360, 'mikan.jpg', 1 );
+
+INSERT INTO item VALUES ( 26,  'カブ', 'カブ(千葉県産)旬の季節は、秋から冬です。栄養素は、ビタミンC、ビタミンK、葉酸、食物繊維が豊富に含まれています。', 150, 'mikan.jpg', 1 );
+
+INSERT INTO item VALUES ( 27,  'トマト', 'トマト(熊本県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンA、カリウム、リコピンが豊富に含まれています。', 120, 'mikan.jpg', 1 );
+
+INSERT INTO item VALUES ( 28,  '桃', '桃(福島県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンA、食物繊維、カリウムが豊富に含まれています。', 350, 'mikan.jpg', 1 );
+
+INSERT INTO item VALUES ( 29,  'ラズベリー', 'ラズベリー(海外産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンK、食物繊維、マンガンが豊富に含まれています。', 600, 'mikan.jpg', 1 );
+
+INSERT INTO item VALUES ( 30,  'スイカ', 'スイカ(茨城県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンA、カリウム、リコピンが豊富に含まれています。', 1200, 'mikan.jpg', 1 );
+
+; INSERT INTO item VALUES ( 31,  '牛乳', '牛乳(北海道県産)旬の季節は、年中です。栄養素は、カルシウム、ビタミンD、ビタミンB12、リンが豊富に含まれています。', 210, 'mikan.jpg', 1 );
+
+INSERT INTO item VALUES ( 31, 'びわ', 'びわ(長崎県産)旬の季節は、春です。栄養素は、ビタミンA、ビタミンC、カリウムが豊富に含まれています。', 560, 'biwa.jpg', 2 );
+
+INSERT INTO item VALUES ( 32,  '牛肉', '牛肉(宮崎県産)旬の季節は、年中です。栄養素は、タンパク質、鉄分、ビタミンB12、亜鉛が豊富に含まれています。', 1200, 'beef.jpg', 1 );
+
+INSERT INTO item VALUES ( 33,  'ミニトマト', 'ミニトマト(愛知県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンA、リコピン、カリウムが豊富に含まれています。', 180, 'minitomato.jpg', 1 );
+
+INSERT INTO item VALUES ( 34,  'シシトウ', 'シシトウ(高知県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンA、カリウム、食物繊維が豊富に含まれています。', 140, 'sisito.jpg', 1 );
+
+INSERT INTO item VALUES ( 35,  'マッシュルーム', 'マッシュルーム(静岡県産)旬の季節は、年中です。栄養素は、ビタミンB群、セレン、カリウム、食物繊維が豊富に含まれています。', 220, 'mushroom.jpg', 1 );
+
+INSERT INTO item VALUES ( 36,  '松茸', '松茸(長野県産)旬の季節は、秋です。栄養素は、ビタミンD、カリウム、ナイアシン、食物繊維が豊富に含まれています。', 10000, 'matutake.jpg', 1 );
+
+INSERT INTO item VALUES ( 37,  '栗', '栗(愛媛県産)旬の季節は、秋です。栄養素は、ビタミンC、カリウム、食物繊維、葉酸が豊富に含まれています。', 700, 'kuri.jpg', 1 );
+
+INSERT INTO item VALUES ( 38,  'カリフラワー', 'カリフラワー(愛知県産)旬の季節は、秋から冬です。栄養素は、ビタミンC、ビタミンK、葉酸、食物繊維が豊富に含まれています。', 240, 'cauliflower.jpg', 1 );
+
+INSERT INTO item VALUES ( 39,  'ビーツ', 'ビーツ(北海道県産)旬の季節は、秋から冬です。栄養素は、葉酸、マグネシウム、鉄分、ビタミンCが豊富に含まれています。', 400, 'beets.jpg', 1 );
+
+INSERT INTO item VALUES ( 40,  'かぼちゃ', 'かぼちゃ(神奈川県産)旬の季節は、秋です。栄養素は、ビタミンA、ビタミンC、カリウム、食物繊維が豊富に含まれています。', 290, 'pumpkin.jpg', 1 );
+
+
+INSERT INTO item VALUES ( 41, 'ドラゴンフルーツ', 'ドラゴンフルーツ(沖縄県産)旬の季節は夏です。栄養素としては、ビタミンC、ビタミンB、食物繊維、カリウムが豊富に含まれています。', 550, 'dragonFruits.jpg', 1 );
+
+
+INSERT INTO item VALUES ( 42, 'アスパラガス', 'アスパラガス(北海道産)旬の季節は、春です。栄養素は、ビタミンK、葉酸、ビタミンC、ビタミンAが豊富に含まれています。', 360, 'asupara.jpg', 1 );
+
+INSERT INTO item VALUES ( 43, '卵', '卵(国産)年中食べられる人気の食材です。栄養素は、タンパク質、ビタミンB12、ビタミンD、セレンが豊富に含まれています。', 250, 'egg.jpg', 3 );
+
+INSERT INTO item VALUES ( 44, 'じゃがいも', 'じゃがいも(北海道産)旬の季節は、秋から冬です。栄養素は、ビタミンC、ビタミンB6、カリウム、食物繊維が豊富に含まれています。', 200, 'jagaimo.jpg', 1 );
+
+; INSERT INTO item VALUES ( 45, 'マグロ', 'マグロ(国産、海外産)年中食べられる人気の食材です。栄養素は、タンパク質、オメガ3脂肪酸、ビタミンD、鉄が豊富に含まれています。', 1500, 'maguro.jpg', 3 );
+INSERT INTO item VALUES ( 45, 'いちご', 'いちご(栃木県産)旬の季節は、冬から春です。栄養素は、ビタミンC、葉酸、食物繊維が豊富に含まれています。', 580, 'ichigo.jpg', 2 );
+
+INSERT INTO item VALUES ( 46, 'レタス', 'レタス(長野県産)旬の季節は、春から夏です。栄養素は、ビタミンK、ビタミンA、葉酸、食物繊維が豊富に含まれています。', 200, 'retasu.jpg', 1 );
+
+INSERT INTO item VALUES ( 47, 'ささみ', 'ささみ(国産)年中食べられる人気の食材です。栄養素は、タンパク質、ビタミンB6、ナイアシン、リンが豊富に含まれています。', 300, 'sasami.jpg', 3 );
+
+INSERT INTO item VALUES ( 48, 'しそ', 'しそ(愛知県産)旬の季節は、夏です。栄養素は、ビタミンK、ビタミンA、カルシウム、鉄が豊富に含まれています。', 150, 'shiso.jpg', 1 );
+
+INSERT INTO item VALUES ( 49, '大根', '大根(神奈川県産)旬の季節は、冬です。栄養素は、ビタミンC、葉酸、カリウム、食物繊維が豊富に含まれています。', 150, 'daikon.jpg', 1 );
+
+INSERT INTO item VALUES ( 50, 'パッションフルーツ', 'パッションフルーツ(鹿児島県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンA、食物繊維、カリウムが豊富に含まれています。', 400, 'passion.
+jpg', 2 );
+
+INSERT INTO item VALUES ( 51, '山芋', '山芋(長野県産)旬の季節は、秋から冬です。栄養素は、ビタミンC、ビタミンB群、カリウム、食物繊維が豊富に含まれています。', 300, 'yamaimo.jpg', 1 );
+
+INSERT INTO item VALUES ( 52, '菜の花', '菜の花(千葉県産)旬の季節は、春です。栄養素は、ビタミンC、ビタミンA、カルシウム、鉄が豊富に含まれています。', 250, 'nabana.jpg', 1 );
+
+INSERT INTO item VALUES ( 53, 'チンゲンサイ', 'チンゲンサイ(静岡県産)旬の季節は、春と秋です。栄養素は、ビタミンA、ビタミンC、カルシウムが豊富に含まれています。', 150, 'chingensai.jpg', 1 );
+
+INSERT INTO item VALUES ( 54, '枝豆', '枝豆(新潟県産)旬の季節は、夏です。栄養素は、タンパク質、ビタミンC、食物繊維が豊富に含まれています。', 300, 'edamame.jpg', 1 );
+
+INSERT INTO item VALUES ( 55, 'エノキ', 'エノキ(長野県産)旬の季節は、秋から冬です。栄養素は、ビタミンB群、食物繊維が豊富に含まれています。', 200, 'enoki.jpg', 1 );
+
+INSERT INTO item VALUES ( 56, 'ゴーヤ', 'ゴーヤ(沖縄県産)旬の季節は、夏です。栄養素は、ビタミンC、カリウムが豊富に含まれています。', 250, 'goya.jpg', 1 );
+
+
+INSERT INTO item VALUES ( 57, '柿', '柿(奈良県産)旬の季節は、秋から冬です。栄養素は、ビタミンA、ビタミンC、食物繊維が豊富に含まれています。', 330, 'kaki.jpg', 2 );
+
+INSERT INTO item VALUES ( 58, '小松菜', '小松菜(東京都産)旬の季節は、冬です。栄養素は、ビタミンC、カルシウム、鉄が豊富に含まれています。', 120, 'komatsuna.jpg', 1 );
+
+INSERT INTO item VALUES ( 69, 'キウイ', 'キウイ(愛媛県産)旬の季節は、冬です。栄養素は、ビタミンC、ビタミンE、食物繊維が豊富に含まれています。', 210, 'kyui.jpg', 2 );
+
+INSERT INTO item VALUES ( 70, 'きゅうり', 'きゅうり(千葉県産)旬の季節は、夏です。栄養素は、ビタミンK、ビタミンC、カリウムが豊富に含まれています。', 140, 'kyuri.jpg', 1 );
+
+INSERT INTO item VALUES ( 71, 'マンゴー', 'マンゴー(宮崎県産)旬の季節は、夏です。栄養素は、ビタミンA、ビタミンC、食物繊維が豊富に含まれています。', 800, 'mango.jpg', 2 );
+
+INSERT INTO item VALUES ( 72, 'メロン', 'メロン(茨城県産)旬の季節は、夏です。栄養素は、ビタミンA、ビタミンC、カリウムが豊富に含まれています。', 1300, 'melon.jpg', 2 );
+
+INSERT INTO item VALUES ( 73, '水菜', '水菜(京都府産)旬の季節は、冬です。栄養素は、ビタミンC、ビタミンA、カルシウムが豊富に含まれています。', 110, 'mizuna.jpg', 1 );
+
+INSERT INTO item VALUES ( 74, 'モロヘイヤ', 'モロヘイヤ(福島県産)旬の季節は、夏です。栄養素は、ビタミンA、ビタミンC、カルシウムが豊富に含まれています。', 210, 'molohia.jpg', 1 );
+
+INSERT INTO item VALUES ( 75, 'もやし', 'もやし(栃木県産)年中食べられる人気の食材です。栄養素は、ビタミンC、食物繊維が豊富に含まれています。', 40, 'moyashi.jpg', 1 );
+
+INSERT INTO item VALUES ( 76, 'ミョウガ', 'ミョウガ(高知県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンB群が豊富に含まれています。', 220, 'myoga.jpg', 1 );
+
+INSERT INTO item VALUES ( 77, 'ニンニク', 'ニンニク(青森県産)旬の季節は、夏です。栄養素は、ビタミンB6、マンガン、セレンが豊富に含まれています。', 229, 'ninniku.jpg', 1 );
+
+INSERT INTO item VALUES ( 78, 'ニラ', 'ニラ(栃木県産)旬の季節は、冬から春です。栄養素は、ビタミンA、ビタミンC、カルシウムが豊富に含まれています。', 120, 'nira.jpg', 1 );
+
+INSERT INTO item VALUES ( 79, 'パクチー', 'パクチー(千葉県産)旬の季節は、春から初夏です。栄養素は、ビタミンC、ビタミンA、カルシウムが豊富に含まれています。', 240, 'pakuchi.jpg', 1 );
+
+INSERT INTO item VALUES ( 80, 'パイナップル', 'パイナップル(沖縄県産)旬の季節は、夏です。栄養素は、ビタミンC、マンガンが豊富に含まれています。', 800, 'pineapple.jpg', 2 );
+
+INSERT INTO item VALUES ( 81, '落花生', '落花生(千葉県産)旬の季節は、秋です。栄養素は、タンパク質、ビタミンE、ナイアシンが豊富に含まれています。', 310, 'rakkasei.jpg', 3 );
+
+INSERT INTO item VALUES ( 82, 'レモン', 'レモン(広島県産)旬の季節は、冬です。栄養素は、ビタミンC、クエン酸が豊富に含まれています。', 140, 'lemon.jpg', 2 );
+
+INSERT INTO item VALUES ( 83, '米', '米(新潟県産)旬の季節は、秋です。栄養素は、炭水化物、ビタミンB群が豊富に含まれています。', 400, 'rice.jpg', 3 );
+
+INSERT INTO item VALUES ( 84, 'ルッコラ', 'ルッコラ(静岡県産)旬の季節は、春から夏です。栄養素は、ビタミンK、ビタミンA、カルシウムが豊富に含まれています。', 200, 'rukkora.jpg', 1 );
+
+INSERT INTO item VALUES ( 85, 'さくらんぼ', 'さくらんぼ(山形県産)旬の季節は、春から夏です。栄養素は、ビタミンC、カリウム、食物繊維が豊富に含まれています。', 1000, 'sakuranbo.jpg', 2 );
+
+INSERT INTO item VALUES ( 86, '里芋', '里芋(静岡県産)旬の季節は、秋から冬です。栄養素は、ビタミンC、カリウム、食物繊維が豊富に含まれています。', 400, 'satoimo.jpg', 1 );
+
+INSERT INTO item VALUES ( 87, 'スモモ', 'スモモ(山梨県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンA、カリウムが豊富に含まれています。', 300, 'sumomo.jpg', 2 );
+
+INSERT INTO item VALUES ( 88, '生姜', '生姜(高知県産)旬の季節は、夏です。栄養素は、ジンゲロール、ビタミンC、マグネシウムが豊富に含まれています。', 170, 'syoga.jpg', 1 );
+
+INSERT INTO item VALUES ( 89, '春菊', '春菊(千葉県産)旬の季節は、秋から冬です。栄養素は、ビタミンA、ビタミンC、カルシウムが豊富に含まれています。', 190, 'shungiku.jpg', 1 );
+
+INSERT INTO item VALUES ( 90, '筍', '筍(京都府産)旬の季節は、春です。栄養素は、ビタミンB群、食物繊維が豊富に含まれています。', 430, 'takenoko.jpg', 1 );
+
+INSERT INTO item VALUES ( 91, '梅', '梅(和歌山県産)旬の季節は、夏です。栄養素は、クエン酸、ビタミンCが豊富に含まれています。', 290, 'ume.jpg', 2 );
+
+INSERT INTO item VALUES ( 92, 'わさび', 'わさび(静岡県産)旬の季節は、春です。栄養素は、ビタミンC、食物繊維が豊富に含まれています。', 820, 'wasabi.jpg', 1 );
+
+INSERT INTO item VALUES ( 93, '洋梨', '洋梨(山形県産)旬の季節は、秋です。栄養素は、食物繊維、ビタミンC、カリウムが豊富に含まれています。', 460, 'westernNashi.jpg', 2 );
+
+INSERT INTO item VALUES ( 94, 'ゆず', 'ゆず(高知県産)旬の季節は、冬です。栄養素は、ビタミンC、カリウムが豊富に含まれています。', 330, 'yuzu.jpg', 2 );
+
+INSERT INTO item VALUES ( 95, 'ズッキーニ', 'ズッキーニ(長野県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンA、カリウムが豊富に含まれています。', 180, 'zucchini.jpg', 1 );
+
+INSERT INTO item VALUES ( 96, 'かぼす', 'かぼす(大分県産)旬の季節は、秋です。栄養素は、ビタミンC、クエン酸が豊富に含まれています。', 340, 'kabosu.jpg', 2 );
+
+INSERT INTO item VALUES ( 97, 'レンコン', 'レンコン(茨城県産)旬の季節は、秋から冬です。栄養素は、ビタミンC、食物繊維、カリウムが豊富に含まれています。', 380, 'lotusroot.jpg', 1 );
+
+INSERT INTO item VALUES ( 98, 'グレープ', 'グレープ(山梨県産)旬の季節は、夏から秋です。栄養素は、ビタミンC、ビタミンK、ポリフェノールが豊富に含まれています。', 770, 'grape.jpg', 2 );
+
+INSERT INTO item VALUES ( 99, 'オクラ', 'オクラ(鹿児島県産)旬の季節は、夏です。栄養素は、ビタミンC、ビタミンK、食物繊維が豊富に含まれています。', 190, 'okra.jpg', 1 );
+
+INSERT INTO item VALUES ( 100, 'イチジク', 'イチジク(和歌山県産)旬の季節は、夏から秋です。栄養素は、ビタミンB6、食物繊維、カリウムが豊富に含まれています。', 680, 'fig.jpg', 2 );
