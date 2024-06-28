@@ -1,0 +1,234 @@
+@charset "UTF-8";
+
+h3 {
+  padding: 20px 0 10px 12px;
+  margin-bottom: -5px;
+}
+
+/* .container, .container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+} */
+/* bootstrapはデフォルトでpaddingが設定してあるのでfooterなどの左右に
+余白がある場合は、containerのpaddingを調整、削除することで隙間を取り除く */
+
+/* table {
+  width: 100%;
+    border-collapse: collapse;
+} */
+
+.table-info {
+  /* margin-top: 20px; */
+  width: 520px;
+  height: 200px;
+  /* margin-bottom: 20px; */
+  width: 70%;
+}
+
+.td-info {
+  font-size: 18px;
+  padding: 20px 30px 25px 22px;
+  border-bottom: 1px solid #9b9b9b; 
+ 
+  width: 200px;
+  /* テキストがセル(cell=td,th)の幅を超えても折り返さず一行で表示。ヘッダセルが一定の幅を持ち内容がはみ出さない */
+  white-space: nowrap; 
+  /* line-height: 2; */
+  /* margin: 10px; */
+}
+
+.th-info {
+  font-weight: normal;
+  padding-left: 23px;
+  border-bottom: 1px solid #9b9b9b;
+  font-size: 18px;
+  letter-spacing: 0.01rem;
+}
+
+.customer_info {
+}
+
+/* モーダル */
+.modal-content {
+  /* border: none;  */
+  /* margin-top: 50px; */
+}
+
+/* 全体 */
+.modal-dialog {
+  width: 100%;
+  /* 画面の80%の幅を使用 */
+  max-width: 500px;
+  /* 最大幅を800pxに設定 */
+}
+
+.current {
+  padding-left: 20px;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-body p {
+  font-size: 1.32rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+}
+
+.modal-body .form-label {
+  font-size: 1.25rem;
+  padding-left: 1.1rem;
+  padding-top: 0.8rem;
+}
+
+.modal-body .form-control {
+  font-size: 18px;
+  margin-top: 1rem;
+  margin: 0;
+  width: 460px;
+}
+
+.modal-footer {
+  margin-top: -10px;
+  border-top: none;
+  margin-bottom: 30px;
+}
+
+.modal-footer .btn {
+  margin: 0 auto;
+}
+
+/* 位置変更 */
+.modal-position {
+  /* position: fixed; */
+  /* transform: translate(0, 0); */
+  top: 20%;
+  left: 2%;
+  /* 中央寄せの設定を上書き */
+}
+
+/* 上のコードは消すけど一応 */
+
+/* 編集の位置 */
+.btn-edit {
+  border: solid 1.5px #1eaa39;
+  color: #1eaa39;
+  padding: 8px 28px;
+  margin-top: -4.2em;
+  margin-left: 28em;
+}
+
+.btn-edit:hover {
+  background-color: #1eaa39;
+  color: #ffffff;
+}
+
+.Birthdate-number {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Birthdate-input {
+  max-width: 32%;
+}
+
+.zip-number {
+  display: flex;
+  justify-content: space-between;
+}
+
+.zip-input {
+  max-width: 48%;
+  /* display: flex; */
+}
+
+.phone-number {
+  display: flex;
+  justify-content: space-between;
+}
+
+.phone-input {
+  /* flex: 1; */
+  max-width: 32%;
+}
+
+.button-modal {
+  margin-top: 15px;
+}
+
+.modal-footer .btn {
+  /* margin-top: 60px; */
+  /* padding-top: 20px; */
+  /* text-align: center; */
+  /* padding: 0.75rem 1.5rem; */
+  /* font-size: 1.1rem;  */
+  margin: 0 auto;
+  /* margin-right: 24px;  */
+}
+
+.modal-footer .btn-left {
+  width: 180px;
+  height: 50px;
+  font: 18px;
+  margin-right: 20px;
+  background-color: #9a9a9a;
+}
+
+.modal-footer .btn-right {
+  height: 50px;
+  width: 240px;
+  font-size: 18px;
+  background-color: #1eaa39;
+}
+
+
+/* ログアウト時のprofile、全画面のfooter上下の隙間 */
+/* .profile-f {
+  margin-bottom: 18.6em;
+} */
+
+.btn-custom {
+  border: 1.5px solid #1eaa39;
+  letter-spacing: 0.05em;
+  font-size: 18px;
+  color: #1eaa39;
+  padding: 0.7em 5.5em;
+  margin: 2em 14em;
+}
+
+.btn-custom:hover {
+  background-color: #1eaa39;
+  color: #fff;
+}
+
+footer {
+  /* paddingで出来たfooter部分の左右余白を埋める */
+  margin-left: -15px;
+  margin-right: -15px;
+  padding: 50px;
+  align-items: center;
+  text-align: center;
+  background-color: #1eaa39;
+  margin-top: 16.8em;
+}
+
+footer p {
+  font-size: 26px;
+}
+
+/* @media (min-width: 1200px) {
+  footer {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding: 50px;
+    align-items: center;
+    text-align: center;
+    background-color: #1eaa39;
+    margin-top: 27em;
+  }
+
+  footer p {
+    font-size: 26px;
+  }
+} */

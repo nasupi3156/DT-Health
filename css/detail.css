@@ -1,0 +1,108 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fcfcfc;
+}
+
+
+.row {
+  margin-right: 10px;
+  margin-top: 50px;
+}
+
+.item_image img {
+  width: 84%;
+  margin-top: 30px;
+  margin-left: 40px;
+  border-radius: 3px;
+  
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; 
+}
+
+.item_image img:hover {
+  transform: scale(1.05); 
+  opacity: 0.9; 
+}
+
+.detail_list {
+  padding: 35px 0px 0px 40px;
+}
+
+.item_name {
+  display: flex;
+  font-size: 20px;
+}
+
+.item_name dd {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.item_detail {
+  padding-top: 16px;
+  font-size: 19px;
+}
+
+.item_detail dt {
+  line-height: 1.5;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
+.money {
+  font-size: 22px;
+
+  font-weight: 500;
+}
+
+.tax {
+  font-weight: 550;
+}
+
+
+.detail_back {
+  width: 25%;
+  height: 52px;
+  margin-right: 34px;
+  margin-top: 15px;
+  margin-left: 36px;
+  background-color: #fdfdfd;
+  border: 1px solid #1eaa39;
+  color: #1eaa39;
+}
+
+.detail_back:hover {
+  opacity: 0.8;
+}
+
+.detail_cart {
+  width: 36%;
+  height: 54px;
+  background-color: #1eaa39;
+  color: #fff;
+  border: none;
+
+  /* footerの上下幅 */
+  margin-bottom: 24.5em;
+}
+
+.detail_cart:hover {
+  background-color: #309737;
+}
+
+.detail_back,
+.detail_cart {
+  font-size: 18px;
+  border-radius: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+

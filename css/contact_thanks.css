@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.contact {
+  padding: 25px 0 5px 50px;
+}
+
+.contact  h3 {
+  font-size: 25px;
+  font-weight: 550;
+}
+
+.contact  p {
+  padding-top: 10px;
+  font-size: 18px;
+}
+
+.contact a {
+  font-size: 17px;
+}
+
+.contact a:hover {
+  text-decoration: underline;
+}

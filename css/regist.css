@@ -1,0 +1,177 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f2f2f2;
+}
+
+.red {
+  color: red;
+  font-size: 15px;
+}
+
+.form_section {
+  background-color: #fff;
+  margin: 10px 300px;
+}
+
+.form_section h1 {
+  font-size: 28px;
+  padding: 38px 2px 3px;
+  padding-right: 18px;
+  font-weight: 545;
+  margin: 36px 0 20px;
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+
+.regist_form {
+  width: 100%;
+  padding-left: 8px;
+  line-height: 1;
+}
+
+.regist_table {
+  margin: 0 auto;
+}
+
+.regist_name {
+  font-size: 18px;
+  width: 165px;
+  padding: 8px 0 20px;
+}
+
+.sex-radio {
+  width: 20px;
+  height: 20px;
+}
+
+label {
+  margin-left: 3px;
+  font-size: 18px;
+}
+
+.regist_data {
+  padding: 10px 0;
+}
+
+.regist_data select {
+  max-width: 100px;
+  height: 25px;
+}
+
+/* セレクトボックス間の余白 */
+.regist_data > select:not(:last-child) {
+  margin-right: 4px;
+}
+
+.regist_data input[type="text"] {
+  padding: 8px;
+  max-width: 250px;
+  height: 33px;
+  outline: none;
+  /* border: solid 2px #d3d3d3; */
+  border: solid 2px #c2c2c2;
+  border-radius: 2px;
+}
+
+/* 郵便番号、ここだけregist_dataからzip */
+.regist_zip input[type="text"] {
+  padding: 5px;
+  width: 80px;
+  height: 32px;
+  border: solid 2px #c2c2c2;
+  border-radius: 2px;
+  outline: none;
+}
+
+.regist_address input[type="text"] {
+  padding: 5px;
+  width: 420px;
+  height: 33px;
+  border: solid 2px #c2c2c2;
+  border-radius: 2px;
+  outline: none;
+}
+
+input[name="address_search"] {
+  font-size: 14px;
+  padding: 6px 5px;
+  margin-left: 2px;
+  /* margin: 10px auto;  */
+  cursor: pointer;
+}
+
+.regist_email input[type="text"] {
+  padding: 5px;
+  max-width: 300px;
+  height: 33px;
+  border: solid 2px #c2c2c2;
+  border-radius: 2px;
+  outline: none;
+}
+
+.regist_data input[type="password"] {
+  max-width: 200px;
+  height: 33px;
+  padding: 5px;
+  border: solid 2px #c2c2c2;
+  border-radius: 2px;
+  outline: none;
+}
+
+.regist_data input[type="checkbox"] {
+  width: 18px;
+  height: 15px;
+  margin: 3px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: #e8f0fe;
+  border: solid 2px #66afe9;
+  border-radius: 4px;
+}
+
+input[type="text"],
+input[type="password"] {
+  font-size: 16px;
+}
+
+.regist_confirm {
+  padding: 30px 0 75px;
+}
+
+input[type="submit"] {
+  width: 575px;
+  height: 60px;
+  margin: 0 auto;
+  display: block;
+  color: #fff;
+  font-size: 21px;
+  margin-top: -1px;
+  background-color: #00bfff;
+  border: none;
+  border-radius: 3px;
+  /* opacity: 0.8; 初期の透明度を設定 */
+  letter-spacing: 0.05em;
+  /* opacity の変化をアニメーション化 */
+  transition: opacity 0.3s; 
+}
+
+input[type="submit"]:hover {
+  /* transition: all 0.3s; */
+  opacity: 1;
+  background-color: #1e90ff;
+}
+
+/* error */
+.input_error {
+  /* border: 2px solid #ffc1c1 !important; */
+  /* background-color: #ffcccc; */
+  background-color: #ffd6d6;
+  /* outline: none !important; */
+}

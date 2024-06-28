@@ -1,0 +1,271 @@
+
+
+/* .photo img {
+  width: 100%;
+  object-fit: cover;
+  height: calc(100vh - 160px);
+} */
+
+
+
+
+
+/* ログインした時、こんにちは！ */
+/* #sessionMessage {
+  padding-top: 38px;
+}
+
+#sessionMessage p {
+  padding: 19px 0 20px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 400;
+  background-color: #d7c6c6;
+} */
+
+
+/* メニューの横向き */
+/* .side {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.side_item{
+  /* display: grid;
+  grid-template-columns: 1fr 1fr 1fr; */
+  display: flex;
+  /* justify-content: space-between; */
+  /* justify-content: center; */
+  padding: 20px 20px 0 60px;
+  /* max-width: 100%; */
+  /* width: 100%; */
+  /* object-fit: cover; */
+}
+.side 
+{
+  /* grid-area   : side; */
+  padding: 20px 0;
+  margin    : 50px 100px 0px 50px;
+  /* line-height: 2.5; */
+  width: 250px;
+  height    : 200px;
+  border    : solid 1px #999;
+  background-color: whitesmoke;
+  text-align   : center;
+}
+
+
+
+
+.side ul 
+{
+  /* display: flex; */
+  padding: 13px;
+  font-size: 18px;
+  /* padding: 20px; */
+  /* padding   : 0; */
+}
+.side p {
+  font-weight: bold;
+  font-size: 17px;
+  }
+
+  .side li a {
+  font-size: 15px;
+  line-height: 1.8;
+}
+/* メニュー付け足し */
+/* .side li 
+{
+  font-size: 15px;
+  padding: 0 20px;  
+} */
+
+/* .side ul 
+{
+  padding   : 0;
+} */
+
+
+
+
+
+/* 付け足し */
+#category
+{
+  line-height: 30px;
+}
+
+
+
+#item_list 
+{
+  /* grid-area    : items; */
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); 
+  /* grid-template-columns: repeat(4, 1fr); */
+  
+  width: 100%;
+  /* widthにすると横幅縮小幅に合わせられる */
+  /* min-width: 100%; */
+  gap: 22px;
+  /* height: 40px; */
+  padding: 40px 100px 0 35px; 
+  /* margin: 40px 0px 10px 10px; */
+  /* margin-top: 40px; */
+  /*上下*/
+  /* margin-left: -60px; */
+  /*左右*/
+}
+
+
+/* #item_list .item img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+} */
+
+#item_list .item
+{
+  /* width: 300px; */
+  padding: 0 40px;
+  /* border: solid 1px #999;
+  background-color: whitesmoke;
+
+  margin: 15px;
+  padding-bottom: 0px; */
+  
+}
+/* 元からあったコード */
+
+#item_list .item ul 
+{
+  /* padding: 20px; */
+  /* margin: 2px; */
+  /* width: 100%; */
+  text-align: center;
+}
+
+
+
+.item img 
+{
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.16);
+  width: 250px;
+  /* max-width: 100%; */
+  /* item_listの子要素にmax-widthで画像の大きさが変わる */
+  height: 180px;
+}
+
+#item_list .item ul a  
+{
+  /* list.php、cart.php : 玉ねぎ、詳細のサイズ */
+  font-size: 18px;
+  
+  color: #333;
+}
+
+.name_price {
+  display: flex;
+  gap: 20px;
+  padding: 10 0 10px 5px;
+  margin-bottom: 40px;
+}
+
+
+
+.name {
+  /* font-size: 14px; */
+}
+
+.price {
+  /* list.php :値段の大きさ */
+  font-size: 18px;
+  /* float: left; */
+  /* text-align: center; */
+  /* margin-top: 6px;
+  margin-left: 20px; */
+}
+
+.tax {
+  font-size: 14px;
+}
+
+
+
+
+/* 商品詳細 : detail.html.twig */
+/* #item_detail 
+{
+  grid-area: items;
+  margin: 20px 20px;
+  padding: 10px 5px 0px 10px;
+  border: solid 1px #999;
+  background-color: whitesmoke;
+} */
+
+/* #item_detail img 
+{
+  width: 150px;
+  height: 150px;
+  margin-left: 30%;
+} */
+
+.cart_in 
+{
+  text-align: center;
+}
+
+/* 商品カート cart.html.twig */
+#cart_list 
+{
+  grid-area: side;
+  height: 150px;
+  margin: 20px;
+  text-align: center;
+  border: solid 1px #999;
+  background-color: whitesmoke;
+}
+
+.item ul .name 
+{
+  /* cart.php : 名前サイズ */
+  font-size: 11px;
+  /* font-weight: bold;  */
+  /* たした */
+}
+
+.empty 
+{
+  grid-area: items;
+  text-align: center;
+  margin-top: 50px;
+  color: red;
+}
+
+.side_item {
+  margin-bottom: 40px;
+}
+
+
+/* 登録した時のユーザこんにちは
+ */
+ /* .welcomeMessage {
+   display: none; 
+   最初は非表示
+   font-size: 16px;
+   color: #fff;
+   background-color: #00f;
+   padding: 10px;
+ } */
+
+ /* .welcomeMessageVisible {
+  display: block;
+} */
+ /* element.style{
+  color: red;
+ } */
+
+
+ 

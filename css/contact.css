@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+.Entire {
+  padding-top: 3px;
+  margin-bottom: 2.8em;
+}
+
+.contact h3 {
+   font-size: 26px;
+   margin: 8px 0;
+}
+
+
+.border {
+  background-color: #f8f9fa; 
+  line-height: 2;
+}
+
+.btn-custom {
+  margin-top: 20px;
+  padding: 15px;
+  width: 180px;
+  height: 50px;
+}
+
+.color {
+  color: red; 
+  font-size: 16px;
+}
+
+footer {
+  padding: 50px;
+  align-items: center;
+  text-align: center;
+  background-color: #1eaa39;
+  margin-top: 4.6em;
+}
+
+footer p {
+  font-size: 26px;
+}

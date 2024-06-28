@@ -1,0 +1,158 @@
+@charset "UTF-8";
+
+.total-amount {
+  margin-left: 25px;
+  
+}
+
+.order-date {
+  padding-top: 14px;
+  font-size: 18px;
+  font-weight: 540;
+}
+
+h3 {
+  margin-top: -2px;
+}
+
+.table-line {
+  border: 1px solid #1daa39 !important;
+}
+
+/* cart履歴右側 (cart.twig) */
+.item_confirm {
+  padding: 62px 20px 20px 50px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.table th,
+.table td {
+  font-weight: normal;
+  border: none;
+}
+
+.table th {
+  background-color: #1eaa39;
+  color: white;
+  font-size: 18px;
+}
+
+.text-center {
+  color: red;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 20px;
+}
+
+.item_total_list {
+  display: flex;
+  /* justify-content: center; */
+  padding: 10px 30px 0 90px;
+  background-color: #fafafa;
+ 
+}
+
+img {
+  width: 140px;
+  height: auto;
+}
+
+.cart_list {
+  border: 1px solid #333;
+  padding: 25px 23px;
+
+  margin-left: 50px;
+  text-align: center;
+  width: 420px;
+  height: 380px;
+}
+
+.cart_list p {
+  line-height: 2;
+}
+
+.cart_list th,
+td {
+  font-weight: normal;
+  line-height: 2.7;
+  font-size: 18px;
+}
+
+.cart_list td {
+  padding-left: 50px;
+}
+
+.submit {
+  border: none;
+  font-size: 18px;
+  margin-top: 30px;
+  margin-right: 130px;
+  background-color: #1eaa39;
+  color: white;
+  font-weight: 540;
+  width: 350px;
+  height: 50px;
+  transition: 0.3s;
+  border-radius: 5px;
+  letter-spacing: 0.05rem;
+  transition: opacity 0.3s;
+  /* 透明度の変化を滑らかに */
+  cursor: pointer;
+}
+
+.submit:hover {
+  background-color: #28b846;
+}
+
+.list_back {
+  display: block;
+  /* リンク全体をブロック要素にする */
+  padding: 15px;
+  margin-top: 30px;
+  margin-right: 8em;
+  width: 350px;
+  height: 50px;
+ 
+  border: 1px solid #1eaa39;
+  border-radius: 5px;
+}
+
+.list_back a {
+  font-size: 18px;
+  display: block;
+  /* ボタンのクリックエリア拡大 */
+  color: #1eaa39;
+}
+
+.list_back:hover {
+  opacity: 0.8;
+}
+
+
+.page-item {
+  margin-right: 6px;
+}
+
+.page-link {
+  padding: 10px 18px;
+  color: #121212;
+  background-color: #f6f6f6;
+  border: 1px solid #d7d7d7;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+footer {
+  padding: 50px;
+  align-items: center;
+  text-align: center;
+  background-color: #1eaa39;
+  margin-top: 26.9em;
+}
+
+footer p {
+  font-size: 26px;
+}
+
+

@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+.list-group-a {
+  padding-left: 42px;
+}
+
+img {
+  width: 100px;
+}
+
+.table-line {
+  min-width: 1200px;
+}
+
+.table th,
+.table td {
+  white-space: nowrap;
+  /* テキストが複数行に折り返されないように */
+  overflow: hidden;
+  /* はみ出たテキストを非表示 */
+  text-overflow: ellipsis;
+  /* テキストが切り取られたことを示すために省略記号（...）を表示します。 */
+}
+
+
+.order-history {
+  font-size: 25px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.btn-edit {
+  color: #0c6dfd;
+  margin-top: -6px;
+}
+
+.delete {
+  padding-top: 10px;
+}
+
+.modal-header {
+  border-top: none;
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+  border-bottom: none;
+}

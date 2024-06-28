@@ -1,0 +1,142 @@
+@charset "UTF-8";
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  /* 不要な横幅の隙間を非表示 */
+}
+
+.container {
+  max-width: 100%;
+  height: 100%;
+}
+
+.row {
+  margin-right: 0;
+}
+
+.item_confirm {
+  padding: 36px 10px 8px 25px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.table th,
+.table td {
+  font-weight: normal;
+  border: none;
+}
+
+.table th {
+  background-color: #1eaa39;
+  color: white;
+  font-size: 18px;
+}
+
+.not-item {
+  color: red;
+  font-size: 20px;
+  font-weight: 550;
+  padding-top: 25px;
+  text-align: center;
+}
+
+.item_total_list {
+  /* grid-column: 1; */
+  display: flex;
+  padding: 10px 30px 0 90px;
+ 
+  background-color: #fafafa;
+}
+
+.image img {
+  width: 140px;
+  height: auto;
+}
+
+.cart_list {
+  border: 1px solid #333;
+  padding: 25px 23px;
+
+  margin-bottom: 16.8em;
+  margin-left: 50px;
+  text-align: center;
+  width: 420px;
+  height: 370px;
+}
+
+.cart_list p {
+  line-height: 2;
+}
+
+.cart_list th,
+td {
+  font-weight: normal;
+  line-height: 2.7;
+}
+
+.cart_list td {
+  padding-left: 50px;
+}
+
+.cart_list th {
+  font-size: 18px;
+}
+
+.cart_price th,
+td {
+  font-size: 20px;
+}
+
+.cart_qty {
+  font-size: 20px;
+}
+
+.submit {
+  border: none;
+  font-size: 18px;
+  margin-top: 30px;
+  margin-right: 130px;
+  background-color: #1eaa39;
+  color: #fff;
+  font-weight: 540;
+  width: 375px;
+  height: 55px;
+  transition: 0.3s;
+  border-radius: 5px;
+  letter-spacing: 0.05rem;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background-color: #309737;
+}
+
+.list_back {
+  /* display: inline-block; */
+  /* 幅とパディングの設定を可能にする */
+  display: block;
+  /* リンク全体をブロック要素にする */
+  padding: 15px;
+  margin-top: 30px;
+  margin-right: 8em;
+  width: 375px;
+  height: 55px;
+  border: 1px solid #1eaa39;
+  border-radius: 5px;
+}
+
+.list_back a {
+  font-size: 18px;
+  margin-top: -6px;
+  display: block;
+  /* ボタンのクリックエリア拡大 */
+  color: #1eaa39;
+}
+
+.list_back:hover {
+  opacity: 0.8;
+}

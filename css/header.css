@@ -1,0 +1,146 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+/* ドロップダウン、マイアカウント */
+.nav-link .dropdown-toggle .my-dropdown-toggle {
+  font-size: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* ドロップダウンメニュー */
+.dropdown-menu .dropdown-item {
+  line-height: 1.8;
+ 
+}
+
+.nav-item.dropdown .dropdown-menu .dropdown-item:hover {
+  background-color: #008000;
+  color: white;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  /* 矢印のサイズを調整 */
+  height: 60px;
+  width: 60px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  /* 矢印左右の幅 */
+  width: auto;
+  top: 0;
+  bottom: 0;
+  background: none;
+}
+
+.carousel-control-prev {
+  /* 幅の調整 */
+  left: 10px;
+}
+
+.carousel-control-next {
+  right: 10px;
+}
+
+.navbar {
+  padding: 23px 15px 17px 55px;
+}
+
+.navbar .navbar-brand {
+  font-size: 32px;
+  font-weight: 600;
+  margin-top: -2px;
+}
+
+/* ボタン */
+.search-form .btn {
+  font-size: 15px;
+  width: 75px;
+  height: 35px;
+}
+/* 検索ボックス */
+.search-form .form-control {
+  height: 38px;
+  width: 250px;
+  margin-right: 20px;
+}
+
+.nav-item .greeting {
+  margin-left: 20px;
+}
+
+.navar.nav-link {
+  font-weight: 600;
+}
+
+.nav-item .account {
+  font-weight: 550;
+}
+
+.nav-item .cart {
+  margin-right: 20px;
+}
+
+.form-control {
+  border-color: #acacac;
+  border-width: 1px;
+}
+
+/* 検索入力欄がフォーカスされた時 */
+.form-control:focus {
+  border-color: #4caf50;
+  /* 枠線の色 */
+  border-width: 1px;
+  /* 枠線の太さ */
+  outline: none;
+  /* ブラウザが自動的に付けるアウトラインを削除 */
+  box-shadow: none;
+  /* ブラウザーがつける影削除*/
+}
+
+.login-out {
+  font-size: 18px;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active { 
+  box-shadow: none; 
+ } 
+
+.navbar-toggler {
+  border: 2px solid #222; 
+}
+
+@media (max-width: 768px) {
+  .navbar-toggler {
+    font-size: 1.4em; 
+  }
+
+  .navbar .navbar-brand {
+    font-size: 28px;
+    font-weight: 600;
+    margin-right: 5px;
+  }
+
+  .navvar .navbar-toggler:focus {
+    border: none;
+    /* outline: none;  */
+    /* クリック時の枠線色を消す */
+  }
+
+}

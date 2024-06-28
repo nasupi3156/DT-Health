@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+.navbar {
+  padding: 1.5em 0px 1.2em 4em;
+  background-color: #23b740 !important;
+}
+
+.navbar a {
+  color: #fef8f8;
+}
+
+.navbar a,
+.navbar a:hover,
+.navbar a:focus,
+.navbar a:active,
+.navbar a.active {
+  color: #fef8f8 !important; 
+  /* 色を白に設定、!important で優先度を上げる */
+  /* text-decoration: none;  */
+  /* アンダーラインを削除 */
+}
+
+.navbar .navbar-brand {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.nav-item {
+  font-size: 20px;
+  padding-left: 10px;
+  font-weight: 540;
+}

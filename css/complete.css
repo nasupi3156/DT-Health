@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+.customer {
+  padding: 25px 0 5px 50px;
+}
+
+.customer  h3 {
+  font-size: 25px;
+  font-weight: 550;
+}
+
+.customer  p {
+  padding-top: 10px;
+  font-size: 18px;
+}
+
+.customer  a {
+  font-size: 17px;
+}
+
+.customer a:hover {
+  text-decoration: underline;
+}
+
+/* li {
+  list-style-type: none;
+} */

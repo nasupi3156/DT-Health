@@ -1,0 +1,348 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* outline:1px solid red; */
+  /* 全要素に色がつき分かりやすい */
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  /* overflow-x: hidden;  */
+  /* 余分なスペースによる水平スクロールを防ぐ */
+}
+
+.container {
+  max-width: 100%;
+  /* height: auto; */
+  /* width: 100%; */
+}
+
+.col-6 {
+  width: 52%;
+}
+
+/* theadの左右幅 */
+.row>* {
+  padding-left: calc(var(--bs-gutter-x)* 1.2);
+}
+
+.container-fluid,
+.container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.item_confirm {
+  padding: 36px 10px 8px 30px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.item_data {
+  margin-left: 10px;
+}
+
+.table th,
+.table td {
+  border: none;
+  padding: 0.25rem;
+}
+
+.table > :not(caption) > * > * {
+  /* padding: 2px 0;  */
+  padding: 0;
+  /* 元々の上下幅をなくす */
+  /* セルの内側余白を全て削除 */
+}
+
+.table th {
+  padding: 0 8px;
+  background-color: #1eaa39;
+  font-size: 18px;
+  color: white;
+}
+
+.table td {
+  padding: 12px 2px 0px 8px;
+  font-size: 18px;
+}
+
+.cart_information th,
+.order_detail th {
+  width: 150px;
+  /* テキストがセル(cell=td,th)の幅を超えても折り返さず一行で表示。ヘッダセルが一定の幅を持ち内容がはみ出さない */
+  white-space: nowrap; 
+}
+
+.cart_information td,
+.order_detail td {
+  word-wrap: break-word;
+  /* 単語の途中で折り返しを行い、長い単語がセルの幅を超えないように。 */
+  word-break: break-all;
+   /* 単語の途中でも強制的に改行を行う。 */
+}
+
+.no-item {
+  color: red;
+  font-size: 20px;
+  font-weight: 550;
+  text-align: center;
+  padding: 25px;
+}
+
+.image img {
+  width: 140px;
+  height: auto;
+}
+
+.cart_confirm {
+  margin-left: 5em;
+  padding: 18px 24px;
+  border: 1px solid #222;
+  border-radius: 5px;
+  width: 585px;
+  height: 730px;
+  margin-bottom: 55px;
+}
+
+.cart_information {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+h5 {
+  font-size: 18.2px;
+  font-weight: 600;
+}
+
+th,
+td {
+  font-weight: normal;
+
+}
+
+th {
+  font-size: 18px;
+  line-height: 2;
+}
+
+td {
+  font-size: 17px;
+  letter-spacing: 0.02rem;
+
+}
+
+.order_detail h5 {
+  padding-top: 10px;
+}
+
+.order_detail td {
+  padding-left: 12px;
+  font-size: 18px;
+}
+
+.order_detail p {
+  font-size: 19px;
+}
+
+.pay {
+  padding-top: 20px;
+
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.cash_label {
+  display: block;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 22px;
+  padding-top: 2px;
+}
+
+.cash_label input[type="radio"] {
+  transform: scale(1.3);
+  /* ラジオボタンを大きくする */
+  margin-right: 6px;
+}
+
+.price {
+  padding-bottom: 20px;
+  padding-top: 10px;
+}
+
+.price th {
+  font-size: 21px;
+  font-weight: 550;
+  letter-spacing: 0.05rem;
+  color: #ff2222;
+}
+
+.price td {
+  padding-left: 60px;
+  font-size: 23px;
+  font-weight: 550;
+  color: #ff2222;
+}
+
+.custom-submit {
+  border: none;
+  font-size: 18px;
+  margin-top: 3px;
+  background-color: #1eaa39;
+  color: white;
+  font-weight: 540;
+  width: 535px;
+  height: 52px;
+  font-weight: 600;
+  transition: 0.3s;
+  border-radius: 5px;
+  letter-spacing: 0.05rem;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.custom-submit:hover {
+  background-color: #309737;
+}
+
+.list_back {
+  /* display: inline-block; */
+  /* 幅とパディングの設定を可能にする */
+  display: block;
+  /* リンク全体をブロック要素にする */
+  padding: 11px;
+  margin-top: 25px;
+  margin-right: 8em;
+  margin-bottom: 55px;
+  width: 535px;
+  height: 52px;
+  border: 1px solid #1eaa39;
+  border-radius: 5px;
+}
+
+.list_back a {
+  font-size: 18px;
+  display: block;
+  text-align: center;
+  /* ボタンのクリックエリア拡大 */
+  color: #1eaa39;
+}
+
+.list_back:hover {
+  opacity: 0.8;
+}
+
+/* 編集 */
+.edit {
+  margin-left: 1em;
+  /* font-size: 2px; */
+}
+
+.btn-edit {
+  font-size: 18px;
+  color: #0000ff;
+  padding-left: 3.5em;
+}
+
+.btn-edit:hover {
+  color: #0000ca;
+  text-decoration: underline;
+}
+
+/* modal */
+.modal-dialog {
+  width: 100%;
+  /* 画面の80%の幅を使用 */
+  max-width: 500px;
+  /* 最大幅を800pxに設定 */
+
+}
+
+.modal-header {
+  /* 上線 */
+  border-bottom: none;
+}
+
+.modal-body p {
+  font-size: 1.32rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+}
+
+.modal-body .form-label {
+  font-size: 1.25rem;
+  padding-left: 1.1rem;
+  padding-top: 0.8rem;
+}
+
+.modal-body .form-control {
+  font-size: 17px;
+  margin-top: 1rem;
+  margin: 0;
+  width: 460px;
+}
+
+/* 下のbuttonの線や幅 */
+.modal-footer {
+  margin-top: -10px;
+  border-top: none;
+  margin-bottom: 30px;
+}
+
+/* 位置変更 */
+.modal-position {
+  /* position: fixed; */
+  /* transform: translate(0, 0); */
+  top: 10%;
+  left: 28%;
+  /* 中央寄せの設定を上書き */
+}
+
+.zip-number {
+  display: flex;
+  justify-content: space-between;
+}
+
+.zip-input {
+  max-width: 48%;
+}
+
+.phone-number {
+  display: flex;
+  justify-content: space-between;
+}
+
+.phone-input {
+  max-width: 32%;
+}
+
+.button-modal {
+  margin-top: 15px;
+}
+
+.modal-footer .btn {
+  margin: 0 auto;
+}
+
+.modal-footer .btn-left {
+  width: 180px;
+  height: 50px;
+  font: 18px;
+  margin-right: 20px;
+  background-color: #9a9a9a;
+}
+
+.modal-footer .btn-right {
+  height: 50px;
+  width: 240px;
+  font-size: 18px;
+  background-color: #1eaa39;
+}

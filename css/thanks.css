@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.thanks {
+  /* text-align: center; */
+  padding: 1em 3em 0 4em;
+  /* background-color: #1eaa39; */
+}
+
+.thanks p {
+  font-size: 18px;
+}
+
+.thanks a:hover {
+  text-decoration: underline;
+}
+
+h3 {
+  font-size: 28px !important;
+  font-weight: 550;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+

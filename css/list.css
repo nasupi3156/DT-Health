@@ -1,0 +1,298 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* outline:1px solid red; */
+  /* 全要素に色がつき分かりやすい */
+}
+
+a {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* background-color: #FAFAFA; */
+}
+
+li {
+  list-style-type: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* 送料無料 */
+.shipping_fee {
+  text-align: center;
+  background-color: #00d62b;
+  padding: 8px;
+}
+
+.shipping_fee p {
+  /* デフォルト設定 */
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 17px;
+  font-weight: 520;
+  letter-spacing: 0.05rem;
+}
+
+.shipping_fee {
+  position: relative;
+}
+
+.shipping_fee .close {
+  position: absolute;
+  color: #ffffff;
+  right: 25px;
+  top: 42%;
+  font-size: 2rem; 
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+.carousel-item img {
+  width: 100%;
+  /* height: calc(100vh - 300px);  */
+  object-fit: cover;
+  /* 画像が設定された高さと幅に収まるように、コンテナに対して画像を切り取るように指定 */
+  overflow: hidden;
+  /* 上下のはみ出した部分を非表示 */
+  /* object-fit: cover;と組み合わせて使用 */
+}
+
+.container {
+  background-color: #fafafa;
+}
+
+.order {
+  position: relative;
+  left: 11em;
+  top: 1em;
+}
+
+#sortOrder {
+  width: 120px;
+  height: 30px;
+
+  border: 1px solid #222;
+}
+
+/* カテゴリーをクリックした時の色の変化 */
+.category_list .active a {
+  color: #1f1f1f;
+  font-weight: 600;
+}
+
+.ctg_number {
+  color: #909090;
+  padding-left: 10px;
+}
+
+.ctg_name:hover {
+  text-decoration: underline;
+}
+
+.category_list .active a .ctg_name {
+  text-decoration: underline;
+}
+
+.side_item {
+  display: flex;
+  padding: 20px 25px 0 60px;
+}
+.side {
+  /* grid-area   : side; */
+  padding: 30px 0px 20px 60px;
+  margin: 80px 20px 0px 0px;
+  width: 240px;
+  height: 300px;
+  border: solid 1px #999;
+  /* background-color: whitesmoke; */
+  background-color: #f4f4f4;
+  border: none;
+}
+
+.side ul {
+  padding: 1px 5px;
+  font-size: 18px;
+}
+
+.side li {
+  padding-top: 1.8px;
+}
+
+.side p {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.side li a {
+  font-size: 19px;
+  color: #222;
+  line-height: 2.2;
+}
+
+.side li a:hover {
+  color: #707070;
+  background-color: transparent;
+}
+
+.season {
+  padding: 6px 9px 4px;
+}
+
+.cate_a {
+  margin-top: -4px;
+}
+
+.cate_s {
+  padding-left: 7px;
+}
+
+#category_s ul li a {
+  padding: 20px;
+}
+
+.search_error {
+  font-size: 18px;
+  margin: 2.8em;
+  color: #206eff;
+  font-weight: 599;
+}
+
+.item_list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  flex-wrap: wrap;
+  /* grid-template-columns: repeat(4, 1fr); */
+  padding-top: 51px;
+  width: 100%;
+  gap: 20px;
+}
+
+.item_list .item {
+  padding: 30px 3px 0px 20px;
+  margin-bottom: 10px;
+}
+
+
+.item img {
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+
+  width: 280px;
+  height: 220px;
+  margin-bottom: 12px;
+}
+
+.image {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; 
+  /* 動きを速くするために0.3秒のトランジションを設定 */
+}
+
+.image:hover {
+  transform: scale(1.05); 
+  /* 5%拡大 */
+  opacity: 0.9; 
+}
+
+.buyNow {
+  margin-bottom: 0.5em;
+}
+
+.buyNow a{
+  border: solid 1.6px #fff;
+
+  font-weight: 548;
+  /* background-color: rgba(255, 255, 255, 0.088); */
+  background-color: rgba(255, 255, 255, 0.005);
+
+  color: #fff;
+  padding: 15px 45px;
+  font-size: 18px;
+ 
+  border-radius: 5px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 5px rgba(162, 162, 162, 0.5); 
+}
+
+.buyNow a:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.147);
+  opacity: 0.9;
+}
+
+.item_list .item ul a {
+  font-size: 18px;
+  color: #333;
+}
+
+.name_price {
+  display: flex;
+  gap: 20px;
+  padding-left: 5px;
+}
+
+
+
+.price {
+  font-size: 20px;
+}
+
+.tax {
+  font-size: 14px;
+}
+
+.cart_in {
+  text-align: center;
+}
+
+/* 商品カート */
+#cart_list {
+  grid-area: side;
+  height: 150px;
+  margin: 20px;
+  text-align: center;
+  border: solid 1px #999;
+  background-color: whitesmoke;
+}
+
+.item ul .name {
+  font-size: 11px;
+}
+
+.empty {
+  grid-area: items;
+  text-align: center;
+  margin-top: 50px;
+  color: red;
+}
+
+.side_item {
+  margin-bottom: 40px;
+}
+
+/* page */
+.page-item {
+  margin-right: 6px;
+}
+
+.page-link {
+  padding: 10px 18px;
+  color: #121212;
+  background-color: #f6f6f6;
+  border: 1px solid #d7d7d7;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  margin-bottom: 25px;
+}
+
+

@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+body {
+  background-color: #f2f2f2;
+}
+
+.container {
+  padding-top: 30px;
+  margin: 50px auto;
+  width: 48%;
+  /* width: 750px; */
+  height: 550px;
+  text-align: center;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px #a3a3a3;
+}
+
+.login_inner {
+  padding-top: 8px;
+  line-height: 3;
+}
+
+input[type="email"],
+input[type="password"] {
+  font-size: 17px;
+}
+
+/* 擬似クラス */
+input[type="email"]:focus,
+input[type="password"]:focus {
+  background-color: #d7ffdf;
+  border: solid 2px #48d765;
+  outline: none;
+  border-radius: 3px;
+}
+
+.email label,
+.password label {
+  display: block;
+}
+
+.email input,
+.password input {
+  width: 35%;
+  height: 42px;
+  padding: 10px;
+  outline: none;
+}
+
+.email p {
+  margin-bottom: -5px;
+}
+
+.password p {
+  /* エラーの文字とbtnの幅 */
+  margin-bottom: -15px;
+}
+
+.login_btn {
+  font-size: 18px;
+  margin-top: 45px;
+  height: 58px;
+  width: 35%;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  /* background-color: #00bfff; */
+  background-color: #e861e8;
+  /* background-color: #f91b5a; */
+  letter-spacing: 0.03em;
+  /* display: inline-block; */
+}
+
+

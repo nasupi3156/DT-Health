@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+.navbar {
+  padding: 24px 35px 23px 55px;
+}
+
+.navbar .navbar-brand {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.nav-item {
+  font-size: 20px;
+  padding-left: 10px;
+  font-weight: 540;
+}
+
+/* 濃い色になるのはactiveクラスが指定してるから、デフォルトの上書きする必要がある */
+.navbar-nav .nav-link.active {
+  color:  #222; 
+  /* 希望の色に置き換える */
+  font-weight: normal;
+}
+
+
+
+

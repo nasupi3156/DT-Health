@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+.container {
+  max-width: 100%;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  /* 項目を縦に積む */
+}
+
+.list-ctg {
+  font-size: 22px;
+  font-weight: 550;
+  padding-top: 11px;
+  padding-left: 42px;
+  margin-bottom: 15px;
+}
+
+/* spanタグにunderline-textで下線の調節 */
+.underline-text {
+  border-bottom: solid #bbbbbb;
+  padding-right: 15px;
+  padding-bottom: 12px;
+}
+
+.list-info {
+  color: #222;
+  padding: 8px 5px 5px 45px;
+  padding-top: 12px;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+.list-info:hover {
+  color: #6a6a6a;
+  text-decoration: underline;
+}
