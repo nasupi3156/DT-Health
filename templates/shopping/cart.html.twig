@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/header.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/footer.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/cart.css" rel="stylesheet" type="text/css" />
+
+    <script src="{{constant('shopping\\Bootstrap::APP_URL')}}js/logout.js"></script>
+    <title>注文選択</title>
+  </head>
+  <body>
+    <header> 
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php">DT-Health </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+          <ul class="navbar-nav ms-auto my-2 my-lg-2 d-flex align-items-center">
+            <form class="d-flex search-form" role="search">
+            <input class="form-control me-2" type="search" placeholder="キーワード検索" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">search</button>
+            </form>
+
+            <li class="nav-item">
+              <a class="nav-link greeting" href="#">こんにちは <span style="font-weight: 500;">{{ family_name }}</span> さん！</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle my-dropdown-toggle account" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                マイアカウント
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}profile.php">お客様情報</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order.php">注文履歴</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}order_detail.php">注文履歴詳細</a></li>
+                <li><a class="dropdown-item" href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}contact.php">お問い合わせ</a></li>
+              </ul>
+     
+              <li class="nav-item">
+                <a class="nav-link cart" href="cart.php">
+                  <i class="bi bi-cart position-relative" style="font-size: 26px;">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger" style=" width: 24px; height: 24px; padding: 0; font-size: 13px; line-height: 24px;">
+                      {{sumNum == 0 ? '0' : sumNum}} 
+                    </span>
+                  </i> 
+                </a>
+              </li>
+            <li class="nav-item login-out">
+              {% if isUserLogin %}
+                <a id="logoutButton" class="nav-link click" href="./login.php?logout=1" onclick="return logoutConfirm();">ログアウト</a>
+              {% else %}
+                <a class="nav-link click" href="./login.php">ログイン</a>
+              {% endif %}
+            </li>
+          </ul> 
+        </div>
+      </div>
+    </nav> 
+  </header> 
+  <div class="item_confirm">
+    <p>注文内容を変更する</p>
+  </div>
+    <section>
+      <div class="container">
+        <div class="row cart-f">
+          <div class="col-md-8">
+           <!-- カート情報 -->
+            <table class="table table-hover" >
+              <thead>
+                <tr>
+                  <th>商品名</th>
+                  <th>画像</th>
+                  <th>商品数</th>
+                  <th>価格</th>
+                  <th>数量</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for value in dataArr %}
+                <tr>
+                  <td class="name">{{value.item_name}}</td>
+                    <td class="image">
+                      <img src="{{constant('shopping\\Bootstrap::ENTRY_URL')}}images/{{value.image}}" alt="{{value.item_name}}" />
+                    </td>
+                  <td>
+                    <p>{{value.quantity}}</p>
+                  </td>
+                  <td>
+                    <p>&yen;{{(value.price)|number_format(0, '.', ',')}}</p>
+                  </td>
+                  <td>
+                    <select class="" onchange="qtyChange({{ value.crt_id }}, this.value)">
+                    {# onchange : 数値を選択、javascriptのqtyChange関数呼び出される #}
+                      {% for num in 1..10 %}
+                      <option value="{{ num }}" {% if num == value.quantity %}selected{% endif %}>{{ num }}</option>
+                      {% endfor %}
+                    </select>
+                    {# 数量 #}
+                  </td>
+                  <td>
+                    <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}cart.php?crt_id={{value.crt_id}}">削除
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+              {% if dataArr | length == 0 %}
+                <p class="not-item">カートに商品は入っていません</p>
+                {# dataArrが何も入ってなければ #}
+              {% endif %}
+          </div>
+          {# col-md-8 #}
+          
+          <div class="col-md-3 cart_list">
+          
+            <table>
+              <tr>
+                <th>カート内商品数 : </td>
+                <td class="cart_qty">{{ sumNum == 0 ? '0' : sumNum }}個</td>
+                </tr>
+              <tr>
+                  <div class="cart_price">
+                    <th>合計金額 :</th>
+                    <td>&yen;{{sumPrice|number_format(0, '.', ',')}}</td>
+                  </div>
+                </tr>
+            </table>
+
+            {# session確認ログインしていればpurchase、していなければlogin #}
+            <form action="{% if isUserLogin %}{{constant('shopping\\Bootstrap::ENTRY_URL')}}purchase.php{% else %}{{constant('shopping\\Bootstrap::ENTRY_URL')}}login.php{% endif %}" method="post">
+              <input type="hidden" name="item_id" value="{{value.item_id}}">
+              <input type="hidden" name="total_price" value="{{sumPrice}}">
+              <input type="hidden" name="sum_num" value="{{sumNum}}">
+              <button type="submit" class="submit" name="purchase">レジへ進む</button>
+            </form> 
+            <p class="list_back">
+              <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}list.php">商品一覧へ戻る</a>
+            </p>
+
+          </div>
+          {# col-md-3 #}
+        </div>
+        {# row #}
+      </div>
+      {# container #}
+    </section>
+    
+    <footer>
+      <p>DT-Health</p>
+    </footer>
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    
+      function qtyChange(crt_id, qty) {
+        $.get('./cart.php?qtyChange=1&crt_id=' + crt_id + '&qty=' + qty, function(data) {
+            if (data) {
+                location.reload();
+            } else {
+                alert('エラーが発生しました');
+            }
+        });
+      }
+      {# JavaScript関数やURLパラメータなどは直接Twigのコンテキストに含める必要はない #}
+      {# qtyChange関数では、商品のIDと新しい数量をパラメータとしてcart.phpに送信し、ページを再読み込み #}
+
+    </script>
+  </body>
+
+</html>
+{# 特殊文字 &yen; : 円マークhttps://e-words.jp/p/r-htmlentity.html #}
+
+

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/admin_header.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/admin_sidebar.css" rel="stylesheet" type="text/css" />
+    <link href="{{constant('shopping\\Bootstrap::APP_URL')}}css/detail_list.css" rel="stylesheet" type="text/css" />
+
+    <script src="{{constant('shopping\\Bootstrap::APP_URL')}}js/logout.js"></script>
+    <title>管理者リスト</title>
+  </head>
+  <body>
+     <header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">ADMIN-DT-Health</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="my-5">
+    <div class="container">
+      <div class="row oreder-detail-f">
+        <div class="col-3 list-group-a">
+          <div class="list-group">
+            <p class="list-ctg"><span class="underline-text">カテゴリー</span></p>
+            
+            <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}admin/admin_signup.php" class="list-info">お客様情報</a>
+            <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}admin/admin_order_history.php" class="list-info">注文履歴詳細</a>
+            <a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}admin/admin_contact.php" class="list-info">お問い合わせ</a>
+          </div>
+        </div>  
+        <div class="col-9">    
+          <h3 class="order-history">注文履歴詳細</h3> 
+            <form action="csv/signup_csv.php" method="get">
+              <span class="csv"><a href="csv/order_history_csv.php" class="btn btn-success mb-3">CSV出力</a></span>
+            </form>
+      
+            <div class="table-responsive">
+              <table class="table table-striped table-hover table-line">
+                <thead class="table-secondary">
+                  <tr>
+                    <th>ユーザーID</th>
+                    <th>注文番号</th>
+                    <th>画像</th>
+                    <th>商品ID</th>
+                    <th>商品名</th>
+                    <th>価格</th>
+                    <th>数量</th>
+                    <th>手数料</th>
+                    <th>合計金額</th>
+                    <th>支払い</th>
+                    <th>注文日</th>
+                    <th>編集</th>
+                    <th>削除</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for order in adminOrder %}
+                
+                  <tr>
+                    <td>{{ order.user_id }}</td>
+                    <td>{{ order.order_id }}</td>
+                    <td><img src="{{constant('shopping\\Bootstrap::ENTRY_URL')}}images/{{ order.image }}" alt="{{ order.item_name }}"></td>
+                    <td>{{ order.item_id }}</td>
+                    <td>{{ order.item_name}}</td>
+                    <td>&yen;{{ order.price }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>&yen;{{ order.shipping_fee }}</td>
+                    <td>&yen;{{ order.total_price }}</td>
+                    <td>{{ order.payment_method }}</td>
+                    <td>{{ order.purchase_date }}</td>
+                    <td><button class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editUserModal{{ order.order_id }}">編集</button></td>
+                    <td class="delete"><a href="{{constant('shopping\\Bootstrap::ENTRY_URL')}}admin/admin_order_history.php?order_id={{ order.order_id}}">削除</a>
+                    </td>
+                  </tr>    
+
+                  <!-- Edit User Modal -->
+                  <div class="modal fade" id="editUserModal{{ order.order_id }}" tabindex="-1" aria-labelledby="editUserModalLabel{{ order.order_id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header no-borders">
+                          <h5 class="modal-title" id="editUserModalLabel{{ order.order_id }}">ユーザー情報の編集 - 注文ID: {{ order.order_id }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                            <div class="modal-body">
+                              <form action="/path/to/update_order.php" method="POST">
+                                <input type="hidden" name="order_id" value="{{ order.order_id }}">
+                                <input type="hidden" name="user_id" value="{{ order.user_id }}">
+                                  <div class="mb-3">
+                                    <label for="editItemName{{ order.order_id }}" class="form-label">商品名</label>
+                                    <input type="text" class="form-control" id="editItemName{{ order.order_id }}" name="item_name" value="{{ order.item_name }}">
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editPrice{{ order.order_id }}" class="form-label">価格</label>
+                                    <input type="text" class="form-control" id="editPrice{{ order.order_id }}" name="price" value="{{ order.price }}">
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editQuantity{{ order.order_id }}" class="form-label">数量</label>
+                                    <input type="text" class="form-control" id="editQuantity{{ order.order_id }}" name="quantity" value="{{ order.quantity }}">
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editPaymentMethod{{ order.order_id }}" class="form-label">支払い方法</label>
+                                    <input type="text" class="form-control" id="editPaymentMethod{{ order.order_id }}" name="payment_method" value="{{ order.payment_method }}">
+                                  </div>
+                                  <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                                    <button type="submit" class="btn btn-primary">変更を保存</button>
+                                  </div>
+                              </form>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  
+  </body>
+  </html>
