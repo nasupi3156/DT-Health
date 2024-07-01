@@ -224,20 +224,7 @@ class Error {
     { //パスワードのが指定の条件を満たしているか確認
       $this->errArr['password'] = 'アルファベットと数字6文字以上で入力してください';
     } 
-  
-    
-  //  if ($this->dataArr['password_confirm'] === '')
-  //   {
-  //     $this->errArr['password_confirm'] = 'パスワードを入力してください';
-  //   } else {
-  // パスワード確認が空でない場合のみ、確認チェックを行う
-     
-  
-    // if ($this->dataArr['password'] !== $this->dataArr['password_confirm'])
-    //   {
-    //     $this->errArr['password_confirm'] = '確認用パスワードと異なっています';
-    //   } 
-    }
+  }
   
   // private function trafficCheck()
   // {
@@ -266,7 +253,7 @@ class Error {
     }
   }
   // err_checkで検証、getErrorFlgで検証が正しいのかを確認
-  // $err_check = true : $err_check変数はエラーがあるかどうかをチェック、最初はtrueでエラーがない
+  // $err_check = true : 初めはエラーがないと仮定してtrue
   // $this->errArrを$key => $valueでエラーのループ処理
   // 空の文字列は、エラーがないことを示す、フォームからバリデーションチェックに合格した場合は、問題がない
-  // ''じゃなかったら、バリデーションが空ではないので、エラーチェックと紐付けられ、エラーチェックに合格しなかったのでfalse 
+  // 空じゃない文字列は、バリデーションが空ではないので、エラーチェックと紐付けられ、エラーチェックに合格しなかったのでfalse 
