@@ -74,47 +74,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm'])) {
     exit();
   } else {
     $context['error_message'] = "申し訳ございません。システムエラーが発生しました。もう一度お試しください。";
-  // }
   } 
 }
-
-// $errArr = isset($_SESSION['errArr']) ? $_SESSION['errArr'] : [];
-// $dataArr = isset($_SESSION['formData']) ? $_SESSION['formData'] : [];
-
-// // confirmページから戻ってきた時、セッションからフォームデータとエラーを取得して使用
-// if (isset($_SESSION['formData'])) {
-//   $dataArr = $_SESSION['formData'];
-//   $errArr = isset($_SESSION['errArr']) ? $_SESSION['errArr'] : [];
-//   // エラーメッセージの後セッションをクリア
-//   unset($_SESSION['errArr']);
-// } else {
-//   // confirmページから戻ってこない場合は、$dataArrと$errArr を初期化。
-//   $dataArr = [];
-//   $errArr = [];
-// }
-
-// $formData = isset($_SESSION['formData']) ? $_SESSION['formData'] : [];
-
-// // エラーチェック
-// $errArr = $error->errorCheck($dataArr);
-
-// if ($_SERVER['REQUEST_METHOD'] === 'POST' && $error->getErrorFlg() === true) // 
 
 list($yearArr, $monthArr, $dayArr) = Initial::getDate();
 
 $sexArr = Initial::getSex();
-// $trafficArr = Initial::getTrafficWay();
-
-
 
 $context = [
   'yearArr' => $yearArr,
   'monthArr' => $monthArr,
   'dayArr' => $dayArr,
   'sexArr' => $sexArr,
-  // 'trafficArr' => $trafficArr,
   'formData' => $dataArr,
-  // 'dataArr' => $dataArr,
   'errArr' => $errArr,
   'delete' => $delete,
   'duplicateEmail' => $duplicateEmail,
@@ -124,21 +96,4 @@ $template = $twig->loadTemplate('regist.html.twig');
 $template->display($context);
 
 
-   // $dataArr['family_name'],
-    // $dataArr['first_name'], 
-    // $dataArr['family_name_kana'],
-    // $dataArr['first_name_kana'],
-    // $dataArr['sex'],
-    // $dataArr['year'],
-    // $dataArr['month'],
-    // $dataArr['day'],
-    // $dataArr['email'],
-    // $dataArr['zip1'],
-    // $dataArr['zip2'],
-    // $dataArr['address'],
-    // $dataArr['tel1'],
-    // $dataArr['tel2'],
-    // $dataArr['tel3'],
-    // $dataArr['password'],
-    // $dataArr['registDate'] ?? date('Y-m-d H:i:s'),
-    // registDateが未定義の場合は現在の日時を使用
+  
